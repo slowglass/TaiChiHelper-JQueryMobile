@@ -1,27 +1,134 @@
+<!DOCTYPE HTML>
 <html>
-  <head>
-    <title>Sample "Hello, World" Application</title>
-  </head>
-  <body bgcolor=white>
+	<head>
+		<title>nativeDroid II - jQueryMobile Template</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-    <table border="0" cellpadding="10">
-      <tr>
-        <td>
-          <img src="images/springsource.png">
-        </td>
-        <td>
-          <h1>Sample "Hello, World" Application</h1>
-        </td>
-      </tr>
-    </table>
+		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
+		<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css" />
+		<link rel="stylesheet" href="/vendor/waves/waves.min.css" />
+		<link rel="stylesheet" href="/vendor/wow/animate.css" />
+		<link rel="stylesheet" href="/css/nativedroid2.css" />
 
-    <p>This is the home page for the HelloWorld Web application. </p>
-    <p>To prove that they work, you can execute either of the following links:
-    <ul>
-      <li>To a <a href="hello.jsp">JSP page</a>.
-      <li>To a <a href="hello">servlet</a>.
-    </ul>
+		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	</head>
+	<body>
+		<style>
+		.centered { margin: auto; display: block;}
+		div.timer
+		{
+			margin: auto;
+			width: 8em;
+			text-align: center;
+			font-size: xx-large;
+		}
+		</style>
+		
+		<div data-role="page">
+			<div data-role="panel" id="bottomsheet" data-animate="false" data-position='bottom' data-display="overlay">
+				<nd2-include data-src="bottom.sheet.html"></nd2-include>
+			</div>
+			<div data-role="header" data-position="fixed">
+				<a href="#bottomsheet" class="ui-btn ui-btn-right" ><i class="zmdi zmdi-more-vert"></i></a>
+				<a href="#leftpanel" class="ui-btn ui-btn-left" ><i class="zmdi zmdi-menu"></i></a>
+				<h1>Tai Chi Helper</h1>
+			</div>
+			<div role="main" class="ui-content">
+				<svg xmlns="http://www.w3.org/2000/svg" height="256" width="256" viewBox="-8 -8 16 16" >
+					<g>
+						<circle r="7" fill="#808080" filter="url(#f)"/>
+						<path d="m0-7a3.5 3.5 0 1 1 0 7 3.5 3.5 0 1 0 0 7 7 7 0 1 1 0-14z" fill="#ccf"/>
+						<path d="m0-7a7 7 0 1 1 0 14 3.5 3.5 0 1 1 0-7 3.5 3.5 0 1 0 0-7z" fill="#004"/>
+						<circle cy="-3.5" r="1.1" fill="#004"/>
+						<circle cy="3.5" r="1.1" fill="#ccf"/>
+					</g>
+				</svg>
+			</div>
+		</div>
 
-  </body>
+		<div data-role="page" id="standing-stake">
+			<div data-role="panel" id="bottomsheet" data-animate="false" data-position='bottom' data-display="overlay">
+				<nd2-include data-src="bottom.sheet.html"></nd2-include>
+			</div>
+			<div data-role="header" data-position="fixed">
+				<a href="#bottomsheet" class="ui-btn ui-btn-right" ><i class="zmdi zmdi-more-vert"></i></a>
+				<a href="#leftpanel" class="ui-btn ui-btn-left" ><i class="zmdi zmdi-menu"></i></a>
+				<h1>Standing Stake</h1>
+			</div>
+			<div role="main" class="ui-content">
+				<div class="timer" style="margin:auto;">00 : 00 : 00</div>
+				<svg class="centered" xmlns="http://www.w3.org/2000/svg" height="256" width="256" viewBox="-8 -8 16 16" >
+					<g>
+						<circle r="7" fill="#808080" filter="url(#f)"/>
+						<path d="m0-7a3.5 3.5 0 1 1 0 7 3.5 3.5 0 1 0 0 7 7 7 0 1 1 0-14z" fill="#ccf"/>
+						<path d="m0-7a7 7 0 1 1 0 14 3.5 3.5 0 1 1 0-7 3.5 3.5 0 1 0 0-7z" fill="#004"/>
+						<circle cy="-3.5" r="1.1" fill="#004"/>
+						<circle cy="3.5" r="1.1" fill="#ccf"/>
+					</g>
+				</svg>
+				 <label for="slider1">Stances:</label>
+                 <input type="range" name="slider1" id="slider1" value="0" min="0" max="12" data-highlight="true">
+
+ 				<label for="slider2">Duration:</label>
+                <input type="range" name="slider2" id="slider2" value="0" min="0" max="60" data-highlight="true">
+
+			</div>
+		</div>
+
+		<div data-role="page" id="swimming-dragon">
+			<div data-role="panel" id="bottomsheet" data-animate="false" data-position='bottom' data-display="overlay">
+				<nd2-include data-src="bottom.sheet.html"></nd2-include>
+			</div>
+			<div data-role="header" data-position="fixed">
+				<a href="#bottomsheet" class="ui-btn ui-btn-right" ><i class="zmdi zmdi-more-vert"></i></a>
+				<a href="#leftpanel" class="ui-btn ui-btn-left" ><i class="zmdi zmdi-menu"></i></a>
+				<h1>Swimming Dragon</h1>
+			</div>
+			<div role="main" class="ui-content">
+				<div id="buttons" style="display: none;">
+					<a href="#" id="switch-polar" class="scb"><img src="img/Polar1.png"/></a>
+					<a href="#" id="switch-linear"class="scb"><img src="img/Linear.png"/></a>
+					<a href="#" id="switch-beta" class="scb"><img src="img/UpDown.png"/></a>
+					<a href="#" id="switch-gamma" class="scb"><img src="img/LeftRight.png"/></a>
+					<a href="#" id="switch-stats" class="scb"><img src="img/Summary.png"/></a>
+					<a href="#" id="restart" class="scb"><img src="img/Restart.png"/></a>
+				</div>
+				<div id="working" style="display: none;">
+					<svg xmlns="http://www.w3.org/2000/svg" height="256" width="256" viewBox="-8 -8 16 16">
+						<circle r="7" fill="#808080" filter="url(#f)"/>
+						<path d="m0-7a3.5 3.5 0 1 1 0 7 3.5 3.5 0 1 0 0 7 7 7 0 1 1 0-14z" fill="#ccf"/>
+						<path d="m0-7a7 7 0 1 1 0 14 3.5 3.5 0 1 1 0-7 3.5 3.5 0 1 0 0-7z" fill="#004"/>
+						<circle cy="-3.5" r="1.1" fill="#004"/>
+						<circle cy="3.5" r="1.1" fill="#ccf"/>
+						</g>
+					</svg>
+				</div>
+				<div id="graphs" style="display: none;">
+				</div>
+				<div id="stats">
+					<table class="stats" id="gradient-style">
+						<tr><th>Stats</th><th>Beta</th><th>Gamma</th></tr>
+						<tr class="min"><td><strong>Min</strong></td><td class="b"></td><td class="g"></tr>
+						<tr class="max"><td><strong>Max</strong></td><td class="b"></td><td class="g"></tr>
+						<tr class="avg"><td><strong>Avg</strong></td><td class="b"></td><td class="g"></tr>
+						<tr class="aavg"><td><strong>Abs Avg</strong></td><td class="b"></td><td class="g"></tr>
+						<tr class="sd"><td><strong>Std. Dev</strong></td><td class="b"></td><td class="g"></tr>
+					</table>
+					<p>For a summary of beta and gamma, please look <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Orientation_and_motion_data_explained">here</a></p>
+				</div>
+			</div>
+		</div>
+
+
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
+		<script src="/vendor/waves/waves.min.js"></script>
+		<script src="/vendor/wow/wow.min.js"></script>
+		<script src="/js/nativedroid2.js"></script>
+		<script src="/nd2settings.js"></script>
+		<script src="//d3js.org/d3.v4.min.js"></script>
+	</body>
 </html>
-
