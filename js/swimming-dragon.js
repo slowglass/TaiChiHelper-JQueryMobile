@@ -23,7 +23,7 @@ SwimmingDragon.prototype = {
   testMode="NONE"
 }
 
-function drawLine(graph, cls, data, fX, aX, fY, aY, colour, opacity)
+SwimmingDragon.prototype.drawLine = function(cls, fX, aX, fY, aY, colour, opacity)
 {
 	var line = d3.svg.line()
 			.interpolate(linetype)
@@ -39,17 +39,30 @@ function drawLine(graph, cls, data, fX, aX, fY, aY, colour, opacity)
 	    .attr('stroke-opacity', opacity);
 }
 
-function transitionLine(cls, data, fX, aX, fY, aY)
+SwimmingDragon.prototype.drawDots = function(cls, fX, aX, fY, aY, colour, opacity)
+{
+	this.graph.selectAll("dot")
+		.data(this.data)
+		.enter().append("circle")
+		.attr("class", cls)
+		.attr('stroke', colour)
+		.attr("r", 0.7)
+		.attr("cx", function(d) { return fX(d[aX]); })
+		.attr("cy", function(d) { return fY(d[aY]); })
+		.attr('opacity', opacity);
+}
+
+SwimmingDragon.prototype.transitionLine = function(cls, fX, aX, fY, aY)
 {
 	var line = d3.svg.line()
 			.interpolate(linetype)
 			.x(function(d) { return fX(d[aX]); })
 			.y(function(d) { return fY(d[aY]); });
 
-	graph.selectAll("path."+cls).transition().duration(speed).attr("d", line(data));
+	graph.selectAll("path."+cls).transition().duration(speed).attr("d", line(this.data));
 }
 
-function transitionPolar(cls, data, fX, aX, fR, aR)
+SwimmingDragon.prototype.transitionPolar = function(cls, fX, aX, fR, aR)
 {
 	var polar = function(d) {
     	var r=fR(d[aR]);
@@ -64,24 +77,11 @@ function transitionPolar(cls, data, fX, aX, fR, aR)
   		.y(function(d) { return polar(d).y; });
 
 
-	graph.selectAll('path.'+cls).transition().duration(speed).attr("d", line(data));
-}
-
-function drawDots(graph, cls, data, fX, aX, fY, aY, colour, opacity)
-{
-	graph.selectAll("dot")
-	   	.data(data)
-	    .enter().append("circle")
-		.attr("class", cls)
-		.attr('stroke', colour)
-	    .attr("r", 0.7)
-	    .attr("cx", function(d) { return fX(d[aX]); })
-	    .attr("cy", function(d) { return fY(d[aY]); })
-	    .attr('opacity', opacity);
+	graph.selectAll('path.'+cls).transition().duration(speed).attr("d", line(this.data));
 }
 
 
-function populateGraph(graph)
+SwimmingDragon.prototype.populate = function()
 {	
 	var h=170; //graph.attr('height')/2;
 	var w=340; //graph.attr('width');
@@ -105,143 +105,135 @@ function populateGraph(graph)
 
 	rangeB *= 1.1;
 	rangeG *= 1.1;
-	pointMappers.x   = d3.scale.linear().domain([0, data.length]).range([0, w]);
-	pointMappers.yB  = d3.scale.linear().domain([ -1*rangeB,  rangeB]).range([h, 0]);
-	pointMappers.rB  = d3.scale.linear().domain([ -1*rangeB,  rangeB]).range([170, 90]);
-	pointMappers.yG  = d3.scale.linear().domain([ -1*rangeG,  rangeG]).range([h, 0]); 
-	pointMappers.rG  = d3.scale.linear().domain([ -1*rangeG,  rangeG]).range([170, 90]); 
-	pointMappers.yA  = d3.scale.linear().domain([ -185,  185]).range([2*h, h]); 
+	this.chart.pointMappers.x   = d3.scale.linear().domain([0, data.length]).range([0, w]);
+	this.chart.pointMappers.yB  = d3.scale.linear().domain([ -1*rangeB,  rangeB]).range([h, 0]);
+	this.chart.pointMappers.rB  = d3.scale.linear().domain([ -1*rangeB,  rangeB]).range([170, 90]);
+	this.chart.pointMappers.yG  = d3.scale.linear().domain([ -1*rangeG,  rangeG]).range([h, 0]); 
+	this.chart.pointMappers.rG  = d3.scale.linear().domain([ -1*rangeG,  rangeG]).range([170, 90]); 
+	this.chart.pointMappers.yA  = d3.scale.linear().domain([ -185,  185]).range([2*h, h]); 
 
-	var x=pointMappers.x;
-	var y=pointMappers.yB;
-	drawLine(graph, "beta beta-data", data, x, "n", y, "b",   "orange", 1.0);
-	drawLine(graph, "beta beta-mx ",   data, x, "n", y, "mxB", "#666666", 1.0);
-	drawLine(graph, "beta beta-z",    data, x, "n", y, "z",   "#666666", 1.0);
-	drawLine(graph, "beta beta-mn",   data, x, "n", y, "mnB", "#666666", 1.0);
+	var x=this.chart.pointMappers.x;
+	var y=this.chart.pointMappers.yB;
+	this.drawLine("beta beta-data",  x, "n", y, "b",   "orange", 1.0);
+	this.drawLine("beta beta-mx ",   x, "n", y, "mxB", "#666666", 1.0);
+	this.drawLine("beta beta-z",     x, "n", y, "z",   "#666666", 1.0);
+	this.drawLine("beta beta-mn",    x, "n", y, "mnB", "#666666", 1.0);
 
-	x=pointMappers.x;
-	y=pointMappers.yG;
-	drawLine(graph, "gamma gamma-data",    data, x, "n", y, "g",   "green", 0.0);
-	drawLine(graph, "gamma gamma-mx", data, x, "n", y, "mxG", "#666666", 0.0);
-	drawLine(graph, "gamma gamma-z",  data, x, "n", y, "z",   "#666666", 0.0);
-	drawLine(graph, "gamma gamma-mn", data, x, "n", y, "mnG", "#666666", 0.0);
+	x=this.chart.pointMappers.x;
+	y=this.chart.pointMappers.yG;
+	this.drawLine("gamma gamma-data",    x, "n", y, "g",   "green", 0.0);
+	this.drawLine("gamma gamma-mx",      x, "n", y, "mxG", "#666666", 0.0);
+	this.drawLine("gamma gamma-z",       x, "n", y, "z",   "#666666", 0.0);
+	this.drawLine("gamma gamma-mn",      x, "n", y, "mnG", "#666666", 0.0);
 
 	x=pointMappers.x;
 	y=pointMappers.yA;
-	drawDots(graph, "alpha alpha-data", data, x, "n", y, "a", "purple", 1.0)
-	drawLine(graph, "alpha alpha-mx", data, x, "n", y, "mxA", "#666666", 1.0);
-	drawLine(graph, "alpha alpha-z",  data, x, "n", y, "z",   "#666666", 1.0);
-	drawLine(graph, "alpha alpha-mn", data, x, "n", y, "mnA", "#666666", 1.0);
+	this.drawDots("alpha alpha-data",  x, "n", y, "a",   "purple", 1.0)
+	this.drawLine("alpha alpha-mx",    x, "n", y, "mxA", "#666666", 1.0);
+	this.drawLine("alpha alpha-z",     x, "n", y, "z",   "#666666", 1.0);
+	this.drawLine("alpha alpha-mn",    x, "n", y, "mnA", "#666666", 1.0);
 
 	graph.selectAll('#text-beta').text(Math.max(Math.abs(statsB.mn),statsB.mx).toFixed(1));
 	graph.selectAll('#text-gamma').text(Math.max(Math.abs(statsG.mn),statsG.mx).toFixed(1));
 }
 
-function hideElements()
+SwimmingDragon.prototype.setVisibility = function()
 {
-	var numOpacity = (chartType=="polar") ? 1.0 : 0.0;
-	if (chartData!="gamma")
+	var showingSummary = (this.chart.data=="stats");
+	var showingBeta = (this.chart.data=="beta");
+	var showingPolar = (this.chart.type=="polar");
+	$('#stats').toggle(!showingSummary);
+	$('#graphs').toggle(showingSummary);
+	$('#switch-beta').toggle(!showingSummary && !showingBeta);
+	$('#switch-gamma').toggle(!showingSummary && showingBeta);
+	$('#switch-polar').show(showingSummary || !showingPolar);
+	$('#switch-linear').toggle(showingSummary || showingPolar);
+	$('#switch-stats').toggle(!showingSummary);
+
+	if (showingSummary) return;
+	var numOpacity = (showingPolar) ? 1.0 : 0.0;
+	if (this.chart.data!="gamma")
 	{
 		$('#switch-gamma').show();
 		$('#switch-beta').hide();
-		graph.selectAll('#text-gamma').transition().duration(speed).attr("opacity", numOpacity);
-		graph.selectAll('#text-beta').transition().duration(speed).attr("opacity", 0.0);
+		this.graph.selectAll('#text-gamma').transition().duration(speed).attr("opacity", numOpacity);
+		this.graph.selectAll('#text-beta').transition().duration(speed).attr("opacity", 0.0);
 	} else {
 
 		$('#switch-gamma').hide();
 		$('#switch-beta').show();
-		graph.selectAll('#text-gamma').transition().duration(speed).attr("opacity", 0.0);
-		graph.selectAll('#text-beta').transition().duration(speed).attr("opacity", numOpacity);
+		this.graph.selectAll('#text-gamma').transition().duration(speed).attr("opacity", 0.0);
+		this.graph.selectAll('#text-beta').transition().duration(speed).attr("opacity", numOpacity);
 	}
 }
 
-function switchToGamma()
+SwimmingDragon.prototype.toGamma = funtion()
 {
-	$('#stats').hide();
-	$('#graphs').show();
-	$('#switch-beta').show();
-	$('#switch-gamma').hide();
-	if (chartData=="gamma") return;
-	chartData="gamma";
-	hideElements();
-	graph.selectAll('path.beta').transition().duration(speed).attr("stroke-opacity", 0.0);
-	graph.selectAll('path.gamma').transition().duration(speed).attr("stroke-opacity", 1.0);
-	graph.selectAll('path.alpha').transition().duration(speed).attr("stroke-opacity", 1.0);
-	var alphaOpacity = (chartType=="polar") ? 0.0 : 1.0;
-	graph.selectAll('path.alpha').transition().duration(speed).attr("stroke-opacity", alphaOpacity);
-	graph.selectAll('circle.alpha').transition().duration(speed).attr("opacity", alphaOpacity);
+	if (this.chart.data=="gamma") return; this.chart.data="gamma";
+	this.setVisibility();
+	
+	this.graph.selectAll('path.beta').transition().duration(speed).attr("stroke-opacity", 0.0);
+	this.graph.selectAll('path.gamma').transition().duration(speed).attr("stroke-opacity", 1.0);
+	this.graph.selectAll('path.alpha').transition().duration(speed).attr("stroke-opacity", 1.0);
+	var alphaOpacity = (this.chart.type=="polar") ? 0.0 : 1.0;
+	this.graph.selectAll('path.alpha').transition().duration(speed).attr("stroke-opacity", alphaOpacity);
+	this.graph.selectAll('circle.alpha').transition().duration(speed).attr("opacity", alphaOpacity);
 }
 
-function switchToBeta()
+SwimmingDragon.prototype.toBeta = funtion()
 {
-	$('#stats').hide();
-	$('#graphs').show();
-	$('#switch-beta').hide();
-	$('#switch-gamma').show();
-	if (chartData=="beta") return;
-	chartData="beta";
-	hideElements();
-	graph.selectAll('path.beta').transition().duration(speed).attr("stroke-opacity", 1.0);
-	graph.selectAll('path.gamma').transition().duration(speed).attr("stroke-opacity", 0.0);
-	graph.selectAll('path.alpha').transition().duration(speed).attr("stroke-opacity", 1.0);
-	var alphaOpacity = (chartType=="polar") ? 0.0 : 1.0;
-	graph.selectAll('path.alpha').transition().duration(speed).attr("stroke-opacity", alphaOpacity);
-	graph.selectAll('circle.alpha').transition().duration(speed).attr("opacity", alphaOpacity);
+	if (this.chart.data=="beta") return; this.chart.data="beta";
+	this.setVisibility();
+	
+	this.graph.selectAll('path.beta').transition().duration(speed).attr("stroke-opacity", 1.0);
+	this.graph.selectAll('path.gamma').transition().duration(speed).attr("stroke-opacity", 0.0);
+	this.graph.selectAll('path.alpha').transition().duration(speed).attr("stroke-opacity", 1.0);
+	var alphaOpacity = (this.chart.type=="polar") ? 0.0 : 1.0;
+	this.graph.selectAll('path.alpha').transition().duration(speed).attr("stroke-opacity", alphaOpacity);
+	this.graph.selectAll('circle.alpha').transition().duration(speed).attr("opacity", alphaOpacity);
 }
 
 SwimmingDragon.prototype.toPolar() = function()
 {
-	$('#stats').hide();
-	$('#graphs').show();
-	$('#switch-polar').hide();
-	$('#switch-linear').show();
-	$('#switch-stats').show();
 	if (this.chart.type=="polar") return; else this.chart.type="polar";
-
-	this.hideWidgets();
+	this.setVisibility();
 
 	var x=this.chart.pointMappers.x;
 	var y=this.chart.pointMappers.rB;
-	transitionPolar("beta-data", data, x, "a", y, "b");
-	transitionPolar("beta-mx",   data, x, "a", y, "mxB");
-	transitionPolar("beta-z",    data, x, "a", y, "z");
-	transitionPolar("beta-mn",   data, x, "a", y, "mnB");
+	this.transitionPolar("beta-data",  x, "a", y, "b");
+	this.transitionPolar("beta-mx",    x, "a", y, "mxB");
+	this.transitionPolar("beta-z",     x, "a", y, "z");
+	this.transitionPolar("beta-mn",    x, "a", y, "mnB");
 
 	x=this.chart.pointMappers.x;
 	y=this.chart.pointMappers.rG;
-	transitionPolar("gamma-data",    data, x, "a", y, "g");
-	transitionPolar("gamma-mx", data, x, "a", y, "mxG");
-	transitionPolar("gamma-z",  data, x, "a", y, "z");
-	transitionPolar("gamma-mn", data, x, "a", y, "mnG");
+	this.transitionPolar("gamma-data",  x, "a", y, "g");
+	this.transitionPolar("gamma-mx",    x, "a", y, "mxG");
+	this.transitionPolar("gamma-z",     x, "a", y, "z");
+	this.transitionPolar("gamma-mn",    x, "a", y, "mnG");
 
-	graph.selectAll('path.alpha').transition().duration(speed).attr("stroke-opacity", 0.0);
-	graph.selectAll('circle.alpha').transition().duration(speed).attr("opacity", 0.0);
+	this.graph.selectAll('path.alpha').transition().duration(speed).attr("stroke-opacity", 0.0);
+	this.graph.selectAll('circle.alpha').transition().duration(speed).attr("opacity", 0.0);
 }
 
 SwimmingDragon.prototype.toLinear() = function()
 {
-	$('#stats').hide();
-	$('#graphs').show();
-	$('#switch-polar').show();
-	$('#switch-linear').hide();
-	$('#switch-stats').show();
 	if (this.chart.type=="linear") return; else this.chart.type="linear";
-
-	this.hideWidgets();
+	this.setVisibility();
 
 	var x=this.chart.pointMappers.x;
 	var y=this.chart.pointMappers.yB;
-	transitionLine("beta-data", data, x, "n", y, "b");
-	transitionLine("beta-mx",   data, x, "n", y, "mxB");
-	transitionLine("beta-z",    data, x, "n", y, "z");
-	transitionLine("beta-mn",   data, x, "n", y, "mnB");
+	this.transitionLine("beta-data",  x, "n", y, "b");
+	this.transitionLine("beta-mx",    x, "n", y, "mxB");
+	this.transitionLine("beta-z",     x, "n", y, "z");
+	this.transitionLine("beta-mn",    x, "n", y, "mnB");
 
 	x=this.chart.pointMappers.x;
 	y=this.chart.pointMappers.yG;
-	transitionLine("gamma-data",  data, x, "n", y, "g");
-	transitionLine("gamma-mx",    data, x, "n", y, "mxG");
-	transitionLine("gamma-z",     data, x, "n", y, "z");
-	transitionLine("gamma-mn",    data, x, "n", y, "mnG");
+	this.transitionLine("gamma-data",   x, "n", y, "g");
+	this.transitionLine("gamma-mx",     x, "n", y, "mxG");
+	this.transitionLine("gamma-z",      x, "n", y, "z");
+	this.transitionLine("gamma-mn",     x, "n", y, "mnG");
 
 	this.graph.selectAll('path.alpha').transition().duration(speed).attr("stroke-opacity", 1.0);
 	this.graph.selectAll('circle.alpha').transition().duration(speed).attr("opacity", 1.0);
@@ -251,18 +243,8 @@ SwimmingDragon.prototype.toLinear() = function()
 
 SwimmingDragon.prototype.toStats() = function()
 {
-	$('#stats').show();
-	$('#graphs').hide();
-
-	$('#switch-gamma').hide();
-	$('#switch-beta').hide();
-	
-	$('#switch-polar').show();
-	$('#switch-linear').show();
-	$('#switch-stats').hide();
-	$('#switch-alpha').hide();
-	$('#switch-beta').hide();
 	if (this.chart.data=="stats") return; else this.chart.data="stats";
+	this.setVisibility();
 }
 
 
@@ -328,36 +310,36 @@ SwimmingDragon.prototype.stop = function()
 	$("#graphs").css("width", "340px");
 	$('#working').hide();
 	$('#working svg').css("webkitAnimationPlayState", "paused");
-
+	
 	this.graph = d3.select("#graphs").append("svg:svg")
 		.attr("id", "sd-vis")
 		.attr("width", 340)
 		.attr("height", 340)
 		.append("svg:g");
 
-	 this.graph.append("text")
-	 	.attr("id", "text-gamma")
-	 	.attr("x", 170)
-    	.attr("y", 170)
-    	.attr("dy", ".35em")
-    	.attr('font-size', '4em')
-    	.attr('fill', '#cccccc')
-    	.attr('stroke', '#cccccc')
-    	.style("text-anchor", "middle")
-	    .attr('opacity', 0)
-    	.text("99");
+	this.graph.append("text")
+		.attr("id", "text-gamma")
+		.attr("x", 170)
+		.attr("y", 170)
+		.attr("dy", ".35em")
+		.attr('font-size', '4em')
+		.attr('fill', '#cccccc')
+		.attr('stroke', '#cccccc')
+		.style("text-anchor", "middle")
+		.attr('opacity', 0)
+		.text("99");
 
-     this.graph.append("text")
-	 	.attr("id", "text-beta")
-	 	.attr("x", 170)
-    	.attr("y", 170)
-    	.attr("dy", ".35em")
-    	.attr('font-size', '4em')
-    	.attr('fill', '#cccccc')
-    	.attr('stroke', '#cccccc')
-    	.style("text-anchor", "middle")
-	    .attr('opacity', 0)
-    	.text("88");
+	this.graph.append("text")
+		.attr("id", "text-beta")
+		.attr("x", 170)
+		.attr("y", 170)
+		.attr("dy", ".35em")
+		.attr('font-size', '4em')
+		.attr('fill', '#cccccc')
+		.attr('stroke', '#cccccc')
+		.style("text-anchor", "middle")
+		.attr('opacity', 0)
+		.text("88");
 
 
 
