@@ -41,7 +41,12 @@ MultiTimer.prototype = {
   getNumber: function(n) {
     if (n>9) return n.toString();
     else return '0'+n.toString();
-  }
+  },
   
+  getIterations: function(i) { return this.timer.iter; },
+  getDuration: function(m,s) { return this.timer.se + this.timer.min*60; }
+  getDuration: function(m,s) { this.timer.sec=s; this.timer.min=m; }
+  setIterations: function(i) { this.timer.iter=i; },
+  setDuration: function(s) { this.timer.sec=s%60; this.timer.min=s/60; }
 }
   
