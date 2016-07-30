@@ -9,64 +9,46 @@ Spill.prototype = {
   lowerBound: 15,
   upperBound: 30,
   maxDelay: 2000,
-  status: "OFF"
-}
+  status: "OFF",
+  
+  setStatusOff: function() {
+    this.status = "OFF";
+    this.sound.stop();
+    clearTimeout(this.delayid);
+  },
+  setStatusOK: function() { this.status = "OK"; },
+  setStatusPlay: function() {
+    this.status = "PLAY";
+    this.sound.play();
+  },
+  setStatusDelay: function() {
+    var self = this;
+    this.status = "DELAY";
+    this.delayid = setTimeout(funcion() { self.replay(); }, this.delay());
+  },
+  
+  replay: function() {
+    if (this.tilt >= this.lowerBound)
+      this.setStatusPlay();
+    else
+      this.setStatusOK();
+  },
+  delay: function() {
+    var v=Math.min(Math.max(this.lowerBound,this.tilt),this.upperBound);
+    var d=this.maxDelay*(v-this.lowerBound)/(this.upperBound-this.lowerBound);
+    return d;
+  },
 
-Spill.prototype.setStatusOff = function() {
-  this.status = "OFF";
-  this.sound.stop();
-  clearTimeout(this.delayid);
-}
-
-Spill.prototype.setStatusOK = function() {
-  this.status = "OK";
-}
-
-Spill.prototype.setStatusPlay = function() {
-  this.status = "PLAY";
-  this.sound.play();
-}
-
-Spill.prototype.setStatusDelay = function() {
-  var self = this;
-  this.status = "DELAY";
-  this.delayid = setTimeout(funcion() { self.replay(); }, this.delay());
-}
-
-Spill.prototype.replay = function() {
-  if (this.tilt >= this.lowerBound)
-    this.setStatusPlay();
-  else
-    this.setStatusOK();
-}
-
-Spill.prototype.delay = function()
-{
-  var v=Math.min(Math.max(this.lowerBound,this.tilt),this.upperBound);
-  var d=this.maxDelay*(v-this.lowerBound)/(this.upperBound-this.lowerBound);
-  return d;
-}
-
-Spill.prototype.setTilt = function(t)
-{
-  this.tilt=t;
-  if (t>=this.lowerBound && this.status=="OK")
-    this.setStatusPlay();
-}
-
-Spill.prototype.setRange = function(mn,mx)
-{
-  this.lowerBound=mn;
-  this.upperBound=mx;
-}
-
-
-Spill.prototype.setMaxDelay = function(d)
-{
-  this.maxDelay=d;
-}
-
-Spill.prototype.setMusic = function(url)
-{
-  this.sound=new Howl({ src: [url], volume: 1.0});
+  setTilt: function(t) {
+    this.tilt=t;
+    if (t>=this.lowerBound && this.status=="OK")
+      this.setStatusPlay();
+  },
+  
+  setRange = function(mn,mx) {
+    this.lowerBound=mn;
+    this.upperBound=mx;
+  },
+  setMaxDelay: function(d) { this.maxDelay=d; },
+  setMusic = function(url) { this.sound=new Howl({ src: [url], volume: 1.0}); }
 }
