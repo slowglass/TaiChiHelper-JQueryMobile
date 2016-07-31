@@ -17,19 +17,24 @@ MultiTimer.prototype = {
   stop: function() {
     if (timerid!=null) clearInterval(this.timerid=null;);
     this.timerid=null;
-    $("#timer").text("");
+    this.iter=-1;
+    updateDisplay();
   }
   
   tick: function() {
+    var callback=null;
     this.timer.sec--;
-    if (this.sec<0) { this.sec= 59; this.min--; }
-    if (this.min<0) { this.sec= this.timer.sec; this.min=this.timer.min; this.iter--; }
-    if (this.iter<0) { this.stop(); return; }
+    if (this.sec<0) { this.sec= 59; this.min--; callback=this.minRollover; }
+    if (this.min<0) { this.sec= this.timer.sec; this.min=this.timer.min; this.iter--; callback=this.iterRollover; }
+    if (this.iter<0) this.stop();
     this.updateDisplay();
+    if (callback != null) callback();
   },
   
   updateDisplay: function() { 
-    var t="";
+    var t;
+    if (this.iter<0)
+      t="";
     if (this.iter == this.timer.iter)
       t=this.getNumber(this.sec);
     else
@@ -48,5 +53,7 @@ MultiTimer.prototype = {
   getDuration: function(m,s) { this.timer.sec=s; this.timer.min=m; }
   setIterations: function(i) { this.timer.iter=i; },
   setDuration: function(s) { this.timer.sec=s%60; this.timer.min=s/60; }
+  setMinRollover: function(cb) { this.minRollover=cb; }
+  setIterRollover: function(cb) { this.iterRollover=cb; }
 }
   
