@@ -33,7 +33,7 @@ YinYang.prototype = {
   
   stop: function() {
     this.$svg
-      .css('-webkit-animation', '');
+      .css('animation', '');
       .css("webkitAnimationPlayState", "");
   }
 }
