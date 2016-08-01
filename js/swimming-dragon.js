@@ -1,7 +1,9 @@
 var SECOND = 1000;
 
-var SwimmingDragon = function() {
+var SwimmingDragon = function(spinner) {
 	this.startSound = new Howl({ src: ["music/ting.wav"], volume: 1.0});
+	this.init();
+	this.spinner = spinner;
 }
 
 SwimmingDragon.prototype = {
@@ -14,8 +16,8 @@ SwimmingDragon.prototype = {
   },
   startSound: null,
   chart: {
-  	type: "linear",
-  	data: "summary",
+  	type: "summary", // summary | polar | linear
+  	data: "summary", // beta | gamma
   	interpolation: "linear", // "linear" , 
   	dataMappers: {}
   },
@@ -26,12 +28,12 @@ SwimmingDragon.prototype = {
 SwimmingDragon.prototype.drawLine = function(cls, fX, aX, fY, aY, colour, opacity)
 {
 	var line = d3.svg.line()
-			.interpolate(linetype)
+			.interpolate(this.chart.interpolation)
 			.x(function(d) { return fX(d[aX]); })
 			.y(function(d) { return fY(d[aY]); });
 
-	graph.append("svg:path")
-		.attr("d", line(data))
+	this.graph.append("svg:path")
+		.attr("d", line(this.data))
 		.attr("class", cls)
 		.attr('stroke', colour)
 		.attr('stroke-width', 1)
@@ -55,11 +57,11 @@ SwimmingDragon.prototype.drawDots = function(cls, fX, aX, fY, aY, colour, opacit
 SwimmingDragon.prototype.transitionLine = function(cls, fX, aX, fY, aY)
 {
 	var line = d3.svg.line()
-			.interpolate(linetype)
+			.interpolate(this.chart.interpolation)
 			.x(function(d) { return fX(d[aX]); })
 			.y(function(d) { return fY(d[aY]); });
 
-	graph.selectAll("path."+cls).transition().duration(speed).attr("d", line(this.data));
+	this.graph.selectAll("path."+cls).transition().duration(this.speed).attr("d", line(this.data));
 }
 
 SwimmingDragon.prototype.transitionPolar = function(cls, fX, aX, fR, aR)
@@ -72,12 +74,12 @@ SwimmingDragon.prototype.transitionPolar = function(cls, fX, aX, fR, aR)
   	}
 
   	var line = d3.svg.line()
-  		.interpolate(linetype)
+  		.interpolate(this.chart.interpolation)
   		.x(function(d) { return polar(d).x; })
   		.y(function(d) { return polar(d).y; });
 
 
-	graph.selectAll('path.'+cls).transition().duration(speed).attr("d", line(this.data));
+	this.graph.selectAll('path.'+cls).transition().duration(this.speed).attr("d", line(this.data));
 }
 
 
@@ -85,68 +87,68 @@ SwimmingDragon.prototype.populate = function()
 {	
 	var h=170; //graph.attr('height')/2;
 	var w=340; //graph.attr('width');
-	var mxB = d3.max(data, function (d) { return d.b; });
-	var mnB = d3.min(data, function (d) { return d.b; }); 
+	var mxB = d3.max(this.data, function (d) { return d.b; });
+	var mnB = d3.min(this.data, function (d) { return d.b; }); 
 	var rangeB = Math.max(mxB, -1*mnB);
-	var mxG = d3.max(data, function (d) { return d.g; });
-	var mnG = d3.min(data, function (d) { return d.g; }); 
+	var mxG = d3.max(this.data, function (d) { return d.g; });
+	var mnG = d3.min(this.data, function (d) { return d.g; }); 
 	var rangeG = Math.max(mxG, -1*mnG);
 
-	for (var i=0; i<data.length; i++)
+	for (var i=0; i<this.data.length; i++)
 	{
-		data[i].z=0;
-		data[i].mxB=rangeB;
-		data[i].mnB=rangeB*-1;
-		data[i].mxA=-180;
-		data[i].mnA=180;
-		data[i].mxG=rangeG;
-		data[i].mnG=rangeG*-1;
+		this.data[i].z=0;
+		this.data[i].mxB=rangeB;
+		this.data[i].mnB=rangeB*-1;
+		this.data[i].mxA=-180;
+		this.data[i].mnA=180;
+		this.data[i].mxG=rangeG;
+		this.data[i].mnG=rangeG*-1;
 	}
 
 	rangeB *= 1.1;
 	rangeG *= 1.1;
-	this.chart.pointMappers.x   = d3.scale.linear().domain([0, data.length]).range([0, w]);
-	this.chart.pointMappers.yB  = d3.scale.linear().domain([ -1*rangeB,  rangeB]).range([h, 0]);
-	this.chart.pointMappers.rB  = d3.scale.linear().domain([ -1*rangeB,  rangeB]).range([170, 90]);
-	this.chart.pointMappers.yG  = d3.scale.linear().domain([ -1*rangeG,  rangeG]).range([h, 0]); 
-	this.chart.pointMappers.rG  = d3.scale.linear().domain([ -1*rangeG,  rangeG]).range([170, 90]); 
-	this.chart.pointMappers.yA  = d3.scale.linear().domain([ -185,  185]).range([2*h, h]); 
+	this.chart.dataMappers.x   = d3.scale.linear().domain([0, this.data.length]).range([0, w]);
+	this.chart.dataMappers.yB  = d3.scale.linear().domain([ -1*rangeB,  rangeB]).range([h, 0]);
+	this.chart.dataMappers.rB  = d3.scale.linear().domain([ -1*rangeB,  rangeB]).range([170, 90]);
+	this.chart.dataMappers.yG  = d3.scale.linear().domain([ -1*rangeG,  rangeG]).range([h, 0]); 
+	this.chart.dataMappers.rG  = d3.scale.linear().domain([ -1*rangeG,  rangeG]).range([170, 90]); 
+	this.chart.dataMappers.yA  = d3.scale.linear().domain([ -185,  185]).range([2*h, h]); 
 
-	var x=this.chart.pointMappers.x;
-	var y=this.chart.pointMappers.yB;
+	var x=this.chart.dataMappers.x;
+	var y=this.chart.dataMappers.yB;
 	this.drawLine("beta beta-data",  x, "n", y, "b",   "orange", 1.0);
 	this.drawLine("beta beta-mx ",   x, "n", y, "mxB", "#666666", 1.0);
 	this.drawLine("beta beta-z",     x, "n", y, "z",   "#666666", 1.0);
 	this.drawLine("beta beta-mn",    x, "n", y, "mnB", "#666666", 1.0);
 
-	x=this.chart.pointMappers.x;
-	y=this.chart.pointMappers.yG;
+	x=this.chart.dataMappers.x;
+	y=this.chart.dataMappers.yG;
 	this.drawLine("gamma gamma-data",    x, "n", y, "g",   "green", 0.0);
 	this.drawLine("gamma gamma-mx",      x, "n", y, "mxG", "#666666", 0.0);
 	this.drawLine("gamma gamma-z",       x, "n", y, "z",   "#666666", 0.0);
 	this.drawLine("gamma gamma-mn",      x, "n", y, "mnG", "#666666", 0.0);
 
-	x=pointMappers.x;
-	y=pointMappers.yA;
+	x=this.chart.dataMappers.x;
+	y=this.chart.dataMappers.yA;
 	this.drawDots("alpha alpha-data",  x, "n", y, "a",   "purple", 1.0)
 	this.drawLine("alpha alpha-mx",    x, "n", y, "mxA", "#666666", 1.0);
 	this.drawLine("alpha alpha-z",     x, "n", y, "z",   "#666666", 1.0);
 	this.drawLine("alpha alpha-mn",    x, "n", y, "mnA", "#666666", 1.0);
 
-	graph.selectAll('#text-beta').text(Math.max(Math.abs(statsB.mn),statsB.mx).toFixed(1));
-	graph.selectAll('#text-gamma').text(Math.max(Math.abs(statsG.mn),statsG.mx).toFixed(1));
+	this.graph.selectAll('#text-beta').text(Math.max(Math.abs(this.stats.b.mn),this.stats.b.mx).toFixed(1));
+	this.graph.selectAll('#text-gamma').text(Math.max(Math.abs(this.stats.g.mn),this.stats.g.mx).toFixed(1));
 }
 
 SwimmingDragon.prototype.setVisibility = function()
 {
-	var showingSummary = (this.chart.data=="stats");
-	var showingBeta = (this.chart.data=="beta");
-	var showingPolar = (this.chart.type=="polar");
-	$('#stats').toggle(!showingSummary);
-	$('#graphs').toggle(showingSummary);
+	var showingSummary = (this.chart.type=="summary");
+	var showingPolar   = (this.chart.type=="polar");
+	var showingBeta    = (this.chart.data=="beta");
+	$('#stats').toggle(showingSummary);
+	$('#graphs').toggle(!showingSummary);
 	$('#switch-beta').toggle(!showingSummary && !showingBeta);
 	$('#switch-gamma').toggle(!showingSummary && showingBeta);
-	$('#switch-polar').show(showingSummary || !showingPolar);
+	$('#switch-polar').toggle(showingSummary || !showingPolar);
 	$('#switch-linear').toggle(showingSummary || showingPolar);
 	$('#switch-stats').toggle(!showingSummary);
 
@@ -156,14 +158,14 @@ SwimmingDragon.prototype.setVisibility = function()
 	{
 		$('#switch-gamma').show();
 		$('#switch-beta').hide();
-		this.graph.selectAll('#text-gamma').transition().duration(speed).attr("opacity", numOpacity);
-		this.graph.selectAll('#text-beta').transition().duration(speed).attr("opacity", 0.0);
+		this.graph.selectAll('#text-gamma').transition().duration(this.speed).attr("opacity", numOpacity);
+		this.graph.selectAll('#text-beta').transition().duration(this.speed).attr("opacity", 0.0);
 	} else {
 
 		$('#switch-gamma').hide();
 		$('#switch-beta').show();
-		this.graph.selectAll('#text-gamma').transition().duration(speed).attr("opacity", 0.0);
-		this.graph.selectAll('#text-beta').transition().duration(speed).attr("opacity", numOpacity);
+		this.graph.selectAll('#text-gamma').transition().duration(this.speed).attr("opacity", 0.0);
+		this.graph.selectAll('#text-beta').transition().duration(this.speed).attr("opacity", numOpacity);
 	}
 }
 
@@ -172,12 +174,12 @@ SwimmingDragon.prototype.toGamma = function()
 	if (this.chart.data=="gamma") return; else this.chart.data="gamma";
 	this.setVisibility();
 	
-	this.graph.selectAll('path.beta').transition().duration(speed).attr("stroke-opacity", 0.0);
-	this.graph.selectAll('path.gamma').transition().duration(speed).attr("stroke-opacity", 1.0);
-	this.graph.selectAll('path.alpha').transition().duration(speed).attr("stroke-opacity", 1.0);
+	this.graph.selectAll('path.beta').transition().duration(this.speed).attr("stroke-opacity", 0.0);
+	this.graph.selectAll('path.gamma').transition().duration(this.speed).attr("stroke-opacity", 1.0);
+	this.graph.selectAll('path.alpha').transition().duration(this.speed).attr("stroke-opacity", 1.0);
 	var alphaOpacity = (this.chart.type=="polar") ? 0.0 : 1.0;
-	this.graph.selectAll('path.alpha').transition().duration(speed).attr("stroke-opacity", alphaOpacity);
-	this.graph.selectAll('circle.alpha').transition().duration(speed).attr("opacity", alphaOpacity);
+	this.graph.selectAll('path.alpha').transition().duration(this.speed).attr("stroke-opacity", alphaOpacity);
+	this.graph.selectAll('circle.alpha').transition().duration(this.speed).attr("opacity", alphaOpacity);
 }
 
 SwimmingDragon.prototype.toBeta = function()
@@ -185,12 +187,12 @@ SwimmingDragon.prototype.toBeta = function()
 	if (this.chart.data=="beta") return; else this.chart.data="beta";
 	this.setVisibility();
 	
-	this.graph.selectAll('path.beta').transition().duration(speed).attr("stroke-opacity", 1.0);
-	this.graph.selectAll('path.gamma').transition().duration(speed).attr("stroke-opacity", 0.0);
-	this.graph.selectAll('path.alpha').transition().duration(speed).attr("stroke-opacity", 1.0);
+	this.graph.selectAll('path.beta').transition().duration(this.speed).attr("stroke-opacity", 1.0);
+	this.graph.selectAll('path.gamma').transition().duration(this.speed).attr("stroke-opacity", 0.0);
+	this.graph.selectAll('path.alpha').transition().duration(this.speed).attr("stroke-opacity", 1.0);
 	var alphaOpacity = (this.chart.type=="polar") ? 0.0 : 1.0;
-	this.graph.selectAll('path.alpha').transition().duration(speed).attr("stroke-opacity", alphaOpacity);
-	this.graph.selectAll('circle.alpha').transition().duration(speed).attr("opacity", alphaOpacity);
+	this.graph.selectAll('path.alpha').transition().duration(this.speed).attr("stroke-opacity", alphaOpacity);
+	this.graph.selectAll('circle.alpha').transition().duration(this.speed).attr("opacity", alphaOpacity);
 }
 
 SwimmingDragon.prototype.toPolar = function()
@@ -198,22 +200,22 @@ SwimmingDragon.prototype.toPolar = function()
 	if (this.chart.type=="polar") return; else this.chart.type="polar";
 	this.setVisibility();
 
-	var x=this.chart.pointMappers.x;
-	var y=this.chart.pointMappers.rB;
+	var x=this.chart.dataMappers.x;
+	var y=this.chart.dataMappers.rB;
 	this.transitionPolar("beta-data",  x, "a", y, "b");
 	this.transitionPolar("beta-mx",    x, "a", y, "mxB");
 	this.transitionPolar("beta-z",     x, "a", y, "z");
 	this.transitionPolar("beta-mn",    x, "a", y, "mnB");
 
-	x=this.chart.pointMappers.x;
-	y=this.chart.pointMappers.rG;
+	x=this.chart.dataMappers.x;
+	y=this.chart.dataMappers.rG;
 	this.transitionPolar("gamma-data",  x, "a", y, "g");
 	this.transitionPolar("gamma-mx",    x, "a", y, "mxG");
 	this.transitionPolar("gamma-z",     x, "a", y, "z");
 	this.transitionPolar("gamma-mn",    x, "a", y, "mnG");
 
-	this.graph.selectAll('path.alpha').transition().duration(speed).attr("stroke-opacity", 0.0);
-	this.graph.selectAll('circle.alpha').transition().duration(speed).attr("opacity", 0.0);
+	this.graph.selectAll('path.alpha').transition().duration(this.speed).attr("stroke-opacity", 0.0);
+	this.graph.selectAll('circle.alpha').transition().duration(this.speed).attr("opacity", 0.0);
 }
 
 SwimmingDragon.prototype.toLinear = function()
@@ -221,29 +223,29 @@ SwimmingDragon.prototype.toLinear = function()
 	if (this.chart.type=="linear") return; else this.chart.type="linear";
 	this.setVisibility();
 
-	var x=this.chart.pointMappers.x;
-	var y=this.chart.pointMappers.yB;
+	var x=this.chart.dataMappers.x;
+	var y=this.chart.dataMappers.yB;
 	this.transitionLine("beta-data",  x, "n", y, "b");
 	this.transitionLine("beta-mx",    x, "n", y, "mxB");
 	this.transitionLine("beta-z",     x, "n", y, "z");
 	this.transitionLine("beta-mn",    x, "n", y, "mnB");
 
-	x=this.chart.pointMappers.x;
-	y=this.chart.pointMappers.yG;
+	x=this.chart.dataMappers.x;
+	y=this.chart.dataMappers.yG;
 	this.transitionLine("gamma-data",   x, "n", y, "g");
 	this.transitionLine("gamma-mx",     x, "n", y, "mxG");
 	this.transitionLine("gamma-z",      x, "n", y, "z");
 	this.transitionLine("gamma-mn",     x, "n", y, "mnG");
 
-	this.graph.selectAll('path.alpha').transition().duration(speed).attr("stroke-opacity", 1.0);
-	this.graph.selectAll('circle.alpha').transition().duration(speed).attr("opacity", 1.0);
-	this.graph.selectAll('#text-gamma').transition().duration(speed).attr("opacity", 0.0);
-	this.graph.selectAll('#text-beta').transition().duration(speed).attr("opacity", 0.0);
+	this.graph.selectAll('path.alpha').transition().duration(this.speed).attr("stroke-opacity", 1.0);
+	this.graph.selectAll('circle.alpha').transition().duration(this.speed).attr("opacity", 1.0);
+	this.graph.selectAll('#text-gamma').transition().duration(this.speed).attr("opacity", 0.0);
+	this.graph.selectAll('#text-beta').transition().duration(this.speed).attr("opacity", 0.0);
 }
 
 SwimmingDragon.prototype.toStats = function()
 {
-	if (this.chart.data=="stats") return; else this.chart.data="stats";
+	if (this.chart.type=="summary") return; else this.chart.type="summary";
 	this.setVisibility();
 }
 
@@ -272,14 +274,15 @@ SwimmingDragon.prototype.updateStats = function(id1, id2, stats, v, alpha)
 
 SwimmingDragon.prototype.phoneMove = function(event) {
 	// Make sure value in range [-180,180
+	if (event.alpha == null) return;
 	 var alpha = (event.alpha > 180) ? event.alpha-360 : event.alpha;
 
-     var count=data.length;
+     var count=this.data.length;
      var d = { a:alpha, b: event.beta, g:event.gamma, n: count };
-     data.push(d);
+     this.data.push(d);
 
      this.updateStats("#gB", ".b", this.stats.b, event.beta,  alpha);
-     this.updateStats("#gG", ".g", this.stats.b, event.gamma, alpha);
+     this.updateStats("#gG", ".g", this.stats.g, event.gamma, alpha);
 }
 
 SwimmingDragon.prototype.start = function()
@@ -290,16 +293,14 @@ SwimmingDragon.prototype.start = function()
 	this.data = [];
 	this.stats.b = { num: 0, asum:0, sum:0, ssum:0, mx: -10000, amx: -10000, mn: 10000 };
 	this.stats.g = { num: 0, asum:0, sum:0, ssum:0, mx: -10000, amx: -10000, mn: 10000 };
-	chart.type="linear";
-	chart.data="stats";
+	this.chart.type="summary";
+	this.chart.data="beta";
 	
-	$('#working').show();
-	$('#working svg').css("webkitAnimationPlayState", "running");
 	$('#stats').hide();
 	$('#graphs').show();
 	$('#buttons').hide();
 
-	sound.play();
+	this.startSound.play();
 	this.callbacks.deviceorientation = function(e) { self.phoneMove(e); };
 	window.addEventListener("deviceorientation", this.callbacks.deviceorientation);
 }
@@ -308,8 +309,7 @@ SwimmingDragon.prototype.stop = function() {
 	console.log("STOP");
 	$("#graphs").css("height", "690px")
 	$("#graphs").css("width", "340px");
-	$('#working').hide();
-	$('#working svg').css("webkitAnimationPlayState", "paused");
+	$('#sd-spinner').hide();
 	
 	this.graph = d3.select("#graphs").append("svg:svg")
 		.attr("id", "sd-vis")
@@ -349,7 +349,8 @@ SwimmingDragon.prototype.stop = function() {
 	this.toStats();
 
 	this.populate();
-	sound.play();
+	this.setVisibility();
+	this.startSound.play();
 	window.removeEventListener("deviceorientation", this.callbacks.deviceorientation);
 }
 
@@ -363,9 +364,8 @@ SwimmingDragon.prototype.prepare = function()
 	$('#graphs').show();
 	$('#buttons').hide();
 
-	$('#working').hide();
-	$('#working').fadeIn(5*s);
-	$('#working svg').css("webkitAnimationPlayState", "paused");
+	this.spinner.spin();
+
 
 	
 	var startDelay = 5*SECOND;
@@ -373,6 +373,7 @@ SwimmingDragon.prototype.prepare = function()
 	window.setTimeout(
 		function() { 
 			self.start();
+			self.spinner.toggle();
 			window.setTimeout(function() { self.stop(); }, practiceTime);
 		}, startDelay);
 }
@@ -382,7 +383,7 @@ SwimmingDragon.prototype.init = function() {
 
 	$( document ).on("change" , function(e, data) { self.prepare(); });
 
-	$('#working').hide();
+	$('#sd-spinner').show();
 	$('#stats').hide();
 	$('#graph').show();
 	$('#buttons').hide();
