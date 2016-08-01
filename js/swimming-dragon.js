@@ -1,7 +1,7 @@
 var SECOND = 1000;
 
 var SwimmingDragon = function() {
-	this.startSound: new Howl({ src: ["music/ting.wav"], volume: 1.0});
+	this.startSound = new Howl({ src: ["music/ting.wav"], volume: 1.0});
 }
 
 SwimmingDragon.prototype = {
@@ -20,7 +20,7 @@ SwimmingDragon.prototype = {
   	dataMappers: {}
   },
   callbacks: {},
-  testMode="NONE"
+  testMode: "NONE"
 }
 
 SwimmingDragon.prototype.drawLine = function(cls, fX, aX, fY, aY, colour, opacity)
@@ -167,9 +167,9 @@ SwimmingDragon.prototype.setVisibility = function()
 	}
 }
 
-SwimmingDragon.prototype.toGamma = funtion()
+SwimmingDragon.prototype.toGamma = function()
 {
-	if (this.chart.data=="gamma") return; this.chart.data="gamma";
+	if (this.chart.data=="gamma") return; else this.chart.data="gamma";
 	this.setVisibility();
 	
 	this.graph.selectAll('path.beta').transition().duration(speed).attr("stroke-opacity", 0.0);
@@ -180,9 +180,9 @@ SwimmingDragon.prototype.toGamma = funtion()
 	this.graph.selectAll('circle.alpha').transition().duration(speed).attr("opacity", alphaOpacity);
 }
 
-SwimmingDragon.prototype.toBeta = funtion()
+SwimmingDragon.prototype.toBeta = function()
 {
-	if (this.chart.data=="beta") return; this.chart.data="beta";
+	if (this.chart.data=="beta") return; else this.chart.data="beta";
 	this.setVisibility();
 	
 	this.graph.selectAll('path.beta').transition().duration(speed).attr("stroke-opacity", 1.0);
@@ -193,7 +193,7 @@ SwimmingDragon.prototype.toBeta = funtion()
 	this.graph.selectAll('circle.alpha').transition().duration(speed).attr("opacity", alphaOpacity);
 }
 
-SwimmingDragon.prototype.toPolar() = function()
+SwimmingDragon.prototype.toPolar = function()
 {
 	if (this.chart.type=="polar") return; else this.chart.type="polar";
 	this.setVisibility();
@@ -216,7 +216,7 @@ SwimmingDragon.prototype.toPolar() = function()
 	this.graph.selectAll('circle.alpha').transition().duration(speed).attr("opacity", 0.0);
 }
 
-SwimmingDragon.prototype.toLinear() = function()
+SwimmingDragon.prototype.toLinear = function()
 {
 	if (this.chart.type=="linear") return; else this.chart.type="linear";
 	this.setVisibility();
@@ -241,7 +241,7 @@ SwimmingDragon.prototype.toLinear() = function()
 	this.graph.selectAll('#text-beta').transition().duration(speed).attr("opacity", 0.0);
 }
 
-SwimmingDragon.prototype.toStats() = function()
+SwimmingDragon.prototype.toStats = function()
 {
 	if (this.chart.data=="stats") return; else this.chart.data="stats";
 	this.setVisibility();
@@ -304,7 +304,7 @@ SwimmingDragon.prototype.start = function()
 	window.addEventListener("deviceorientation", this.callbacks.deviceorientation);
 }
 
-SwimmingDragon.prototype.stop = function()
+SwimmingDragon.prototype.stop = function() {
 	console.log("STOP");
 	$("#graphs").css("height", "690px")
 	$("#graphs").css("width", "340px");
@@ -368,9 +368,9 @@ SwimmingDragon.prototype.prepare = function()
 	$('#working svg').css("webkitAnimationPlayState", "paused");
 
 	
+	var startDelay = 5*SECOND;
+	var practiceTime = 2*SECOND;
 	window.setTimeout(
-		var startDelay = 5*SECOND;
-		var practiceTime = 2*SECOND;
 		function() { 
 			self.start();
 			window.setTimeout(function() { self.stop(); }, practiceTime);
