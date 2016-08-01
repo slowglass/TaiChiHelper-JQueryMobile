@@ -1,27 +1,163 @@
+<!DOCTYPE HTML>
 <html>
-  <head>
-    <title>Sample "Hello, World" Application</title>
-  </head>
-  <body bgcolor=white>
+	<head>
+		<title>Tai Chi Helper</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-    <table border="0" cellpadding="10">
-      <tr>
-        <td>
-          <img src="images/springsource.png">
-        </td>
-        <td>
-          <h1>Sample "Hello, World" Application</h1>
-        </td>
-      </tr>
-    </table>
+		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
+		<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css" />
+		<link rel="stylesheet" href="/vendor/waves/waves.min.css" />
+		<link rel="stylesheet" href="/vendor/wow/animate.css" />
+		<link rel="stylesheet" href="/css/nativedroid2.css" />
 
-    <p>This is the home page for the HelloWorld Web application. </p>
-    <p>To prove that they work, you can execute either of the following links:
-    <ul>
-      <li>To a <a href="hello.jsp">JSP page</a>.
-      <li>To a <a href="hello">servlet</a>.
-    </ul>
+		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	</head>
+	<body>
+		<style>
+		.centered { margin: auto; display: block;}
+		div.timer
+		{
+			margin: auto;
+			width: 8em;
+			text-align: center;
+			font-size: xx-large;
+		}
+		</style>
+		
+		<div data-role="page" id="home">
+			<div data-role="header" data-position="fixed">
+				<a href="#config" class="ui-btn ui-btn-right" ><i class="zmdi zmdi-more-vert"></i></a>
+				<h1>Tai Chi Helper</h1>
+			</div>
+			<div role="main" class="ui-content">
+				<div id="logo"></div>
+			</div>
+		</div>
 
-  </body>
+		<div data-role="page" id="standing-stake">
+			<div data-role="header" data-position="fixed">
+				<a href="#config" class="ui-btn ui-btn-right" ><i class="zmdi zmdi-more-vert"></i></a>
+				<a href="#home" class="ui-btn ui-btn-left" ><i class="zmdi zmdi-home"></i></a>
+				<h1>Standing Stake</h1>
+			</div>
+			<div role="main" class="ui-content">
+				<div id="ss-spinner"></div>
+			</div>
+		</div>
+
+		<div data-role="page" id="swimming-dragon">
+			<div data-role="header" data-position="fixed">
+				<a href="#config" class="ui-btn ui-btn-right" ><i class="zmdi zmdi-more-vert"></i></a>
+				<a href="#home" class="ui-btn ui-btn-left" ><i class="zmdi zmdi-home"></i></a>
+				<h1>Swimming Dragon</h1>
+			</div>
+			<div role="main" class="ui-content">
+				<div id="buttons" style="display: none;">
+					<a href="#" id="switch-stats" class="scb"><img src="img/Summary.png"/></a>
+					<a href="#" id="switch-linear"class="scb"><img src="img/Linear.png"/></a>
+					<a href="#" id="switch-polar" class="scb"><img src="img/Polar.png"/></a>
+					<a href="#" id="switch-beta" class="scb"><img src="img/Beta.png"/></a>
+					<a href="#" id="switch-gamma" class="scb"><img src="img/Gamma.png"/></a>
+					<a href="#" id="restart" class="scb"><img src="img/Restart.png"/></a>
+				</div>
+				<div id="sd-spinner" style="display: none;"></div>
+				<div id="graphs" style="display: none;"></div>
+				<div id="stats">
+					<table class="stats" id="gradient-style">
+						<tr><th>Stats</th><th>Beta</th><th>Gamma</th></tr>
+						<tr class="min"><td><strong>Min</strong></td><td class="b"></td><td class="g"></tr>
+						<tr class="max"><td><strong>Max</strong></td><td class="b"></td><td class="g"></tr>
+						<tr class="avg"><td><strong>Avg</strong></td><td class="b"></td><td class="g"></tr>
+						<tr class="aavg"><td><strong>Abs Avg</strong></td><td class="b"></td><td class="g"></tr>
+						<tr class="sd"><td><strong>Std. Dev</strong></td><td class="b"></td><td class="g"></tr>
+					</table>
+					<p>For a summary of beta and gamma, please look <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Orientation_and_motion_data_explained">here</a></p>
+				</div>
+			</div>
+		</div>
+
+		<div data-role="page" id="config">
+			<div data-role="header" data-position="fixed">
+				<a href="#home" class="ui-btn ui-btn-left" ><i class="zmdi zmdi-home"></i></a>
+				<h1>Tai Chi Helper : Config</h1>
+			</div>
+			<div role="main" class="ui-content">
+				<form>
+					<div data-role="collapsible" data-inset="false">
+						<h4>Standing Stake</h4>
+						<label for="ss-dur" class="select">Duration</label>
+						<select name="ss-dur" id="ss-dur" data-native-menu="false">
+						    <option value="1">1 min</option>
+						    <option value="2" selected="selected">2 mins</option>
+						    <option value="3">3 mins</option>
+						    <option value="4">4 mins</option>
+						    <option value="5">5 mins</option>
+						    <option value="10">10 mins</option>
+						    <option value="15">15 mins</option>
+						    <option value="20">20 mins</option>
+						    <option value="30">30 mins</option>
+						    <option value="45">45 mins</option>
+						    <option value="60">60 mins</option>
+						</select>
+						<label for="ss-iter">Iterations:</label><input type="range" name="ss-iter" id="ss-iter" value="2" min="1" max="12" data-highlight="true">
+					</div>
+					<div data-role="collapsible" data-inset="false">
+						<h4>Swimming Dragon</h4>
+						<label for="sd-mn">Min Tilt:</label><input type="range" name="sd-mn" id="sd-mn" value="10" min="1" max="90" data-highlight="true">
+						<label for="sd-mx">Max Tilt:</label><input type="range" name="sd-mx" id="sd-mx" value="45" min="1" max="90" data-highlight="true">
+						<label for="sd-dur">Max Duration:</label><input type="range" name="sd-dur" id="sd-dur" value="2" min="1" max="5" data-highlight="true">
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
+		<script src="/vendor/waves/waves.min.js"></script>
+		<script src="/vendor/wow/wow.min.js"></script>
+		<script src="/js/nativedroid2.js"></script>
+		<script src="/js/howler2.js"></script>
+		<script src="/nd2settings.js"></script>
+		<script src="//d3js.org/d3.v3.min.js"></script>
+		<script src="/js/yin-yang.js"></script>
+		<script src="/js/multi-timer.js"></script>
+		<script src="/js/swimming-dragon.js"></script>
+		<script src="/js/spill.js"></script>
+		<style>
+		.scb img { width: 52px; height: 52px;}
+		</style>
+		<script>
+			var endSound = new Howl({  src: ["music/templeBell.wav"]});
+			var minSound = new Howl({  src: ["music/ting.wav"]});
+			var timer;
+			var logo=new YinYang("#logo", "#ccf", "#004");
+			var sdSpinner=new YinYang("#sd-spinner", "#ccf", "#004");
+			var ssSpinner=new YinYang("#ss-spinner", "#ccf", "#004");
+			var sd=new SwimmingDragon(sdSpinner);
+			timer=new MultiTimer();
+				timer
+					.on("min-rollover", function() { minSound.play(); })
+					.on("iter-rollover", function() { ssSpinner.toggle(); endSound.play(); })
+					.on("finished", function() { ssSpinner.stop(); });
+
+			$("body").on("pagecontainerbeforechange", function(e, ui) {
+				if (typeof ui.toPage != "string") return;
+				if (ui.toPage.split('#')[1] == "standing-stake") 
+				{
+					console.log("Starting standing stake");
+					$("#ss-spinner path").click(function() { timer.start(); ssSpinner.spin(); });
+				}
+				if (ui.toPage.split('#')[1] == "swimming-dragon") 
+				{
+					console.log("Starting standing stake");
+					$("#sd-spinner path").click(function() { sd.prepare(); });
+				}
+			});
+			$('#logo path:eq(0)').click(function() { $("body").pagecontainer( "change", "#swimming-dragon"); });
+			$('#logo path:eq(1)').click(function() { $("body").pagecontainer( "change", "#standing-stake"); });
+		</script>
+	</body>
 </html>
-
