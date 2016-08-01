@@ -26,87 +26,44 @@
 		}
 		</style>
 		
-		<div data-role="page">
-			<div data-role="panel" id="bottomsheet" data-animate="false" data-position='bottom' data-display="overlay">
-				<nd2-include data-src="bottom.sheet.html"></nd2-include>
-			</div>
+		<div data-role="page" id="home">
 			<div data-role="header" data-position="fixed">
-				<a href="#bottomsheet" class="ui-btn ui-btn-right" ><i class="zmdi zmdi-more-vert"></i></a>
-				<a href="#leftpanel" class="ui-btn ui-btn-left" ><i class="zmdi zmdi-menu"></i></a>
+				<a href="#config" class="ui-btn ui-btn-right" ><i class="zmdi zmdi-more-vert"></i></a>
 				<h1>Tai Chi Helper</h1>
 			</div>
 			<div role="main" class="ui-content">
-				<svg xmlns="http://www.w3.org/2000/svg" height="256" width="256" viewBox="-8 -8 16 16" >
-					<g>
-						<circle r="7" fill="#808080" filter="url(#f)"/>
-						<path d="m0-7a3.5 3.5 0 1 1 0 7 3.5 3.5 0 1 0 0 7 7 7 0 1 1 0-14z" fill="#ccf"/>
-						<path d="m0-7a7 7 0 1 1 0 14 3.5 3.5 0 1 1 0-7 3.5 3.5 0 1 0 0-7z" fill="#004"/>
-						<circle cy="-3.5" r="1.1" fill="#004"/>
-						<circle cy="3.5" r="1.1" fill="#ccf"/>
-					</g>
-				</svg>
+				<div id="logo"></div>
 			</div>
 		</div>
 
 		<div data-role="page" id="standing-stake">
-			<div data-role="panel" id="bottomsheet" data-animate="false" data-position='bottom' data-display="overlay">
-				<nd2-include data-src="bottom.sheet.html"></nd2-include>
-			</div>
 			<div data-role="header" data-position="fixed">
-				<a href="#bottomsheet" class="ui-btn ui-btn-right" ><i class="zmdi zmdi-more-vert"></i></a>
-				<a href="#leftpanel" class="ui-btn ui-btn-left" ><i class="zmdi zmdi-menu"></i></a>
+				<a href="#config" class="ui-btn ui-btn-right" ><i class="zmdi zmdi-more-vert"></i></a>
+				<a href="#home" class="ui-btn ui-btn-left" ><i class="zmdi zmdi-home"></i></a>
 				<h1>Standing Stake</h1>
 			</div>
 			<div role="main" class="ui-content">
-				<div class="timer" style="margin:auto;">00 : 00 : 00</div>
-				<svg class="centered" xmlns="http://www.w3.org/2000/svg" height="256" width="256" viewBox="-8 -8 16 16" >
-					<g>
-						<circle r="7" fill="#808080" filter="url(#f)"/>
-						<path d="m0-7a3.5 3.5 0 1 1 0 7 3.5 3.5 0 1 0 0 7 7 7 0 1 1 0-14z" fill="#ccf"/>
-						<path d="m0-7a7 7 0 1 1 0 14 3.5 3.5 0 1 1 0-7 3.5 3.5 0 1 0 0-7z" fill="#004"/>
-						<circle cy="-3.5" r="1.1" fill="#004"/>
-						<circle cy="3.5" r="1.1" fill="#ccf"/>
-					</g>
-				</svg>
-				 <label for="slider1">Stances:</label>
-                 <input type="range" name="slider1" id="slider1" value="0" min="0" max="12" data-highlight="true">
-
- 				<label for="slider2">Duration:</label>
-                <input type="range" name="slider2" id="slider2" value="0" min="0" max="60" data-highlight="true">
-
+				<div id="ss-spinner"></div>
 			</div>
 		</div>
 
 		<div data-role="page" id="swimming-dragon">
-			<div data-role="panel" id="bottomsheet" data-animate="false" data-position='bottom' data-display="overlay">
-				<nd2-include data-src="bottom.sheet.html"></nd2-include>
-			</div>
 			<div data-role="header" data-position="fixed">
 				<a href="#bottomsheet" class="ui-btn ui-btn-right" ><i class="zmdi zmdi-more-vert"></i></a>
-				<a href="#leftpanel" class="ui-btn ui-btn-left" ><i class="zmdi zmdi-menu"></i></a>
+				<a href="#home" class="ui-btn ui-btn-left" ><i class="zmdi zmdi-home"></i></a>
 				<h1>Swimming Dragon</h1>
 			</div>
 			<div role="main" class="ui-content">
 				<div id="buttons" style="display: none;">
-					<a href="#" id="switch-polar" class="scb"><img src="img/Polar1.png"/></a>
+					<a href="#" id="switch-polar" class="scb"><img src="img/Polar.png"/></a>
 					<a href="#" id="switch-linear"class="scb"><img src="img/Linear.png"/></a>
-					<a href="#" id="switch-beta" class="scb"><img src="img/UpDown.png"/></a>
-					<a href="#" id="switch-gamma" class="scb"><img src="img/LeftRight.png"/></a>
+					<a href="#" id="switch-beta" class="scb"><img src="img/Beta.png"/></a>
+					<a href="#" id="switch-gamma" class="scb"><img src="img/Gamma.png"/></a>
 					<a href="#" id="switch-stats" class="scb"><img src="img/Summary.png"/></a>
 					<a href="#" id="restart" class="scb"><img src="img/Restart.png"/></a>
 				</div>
-				<div id="working" style="display: none;">
-					<svg xmlns="http://www.w3.org/2000/svg" height="256" width="256" viewBox="-8 -8 16 16">
-						<circle r="7" fill="#808080" filter="url(#f)"/>
-						<path d="m0-7a3.5 3.5 0 1 1 0 7 3.5 3.5 0 1 0 0 7 7 7 0 1 1 0-14z" fill="#ccf"/>
-						<path d="m0-7a7 7 0 1 1 0 14 3.5 3.5 0 1 1 0-7 3.5 3.5 0 1 0 0-7z" fill="#004"/>
-						<circle cy="-3.5" r="1.1" fill="#004"/>
-						<circle cy="3.5" r="1.1" fill="#ccf"/>
-						</g>
-					</svg>
-				</div>
-				<div id="graphs" style="display: none;">
-				</div>
+				<div id="sd-spinner" style="display: none;"></div>
+				<div id="graphs" style="display: none;"></div>
 				<div id="stats">
 					<table class="stats" id="gradient-style">
 						<tr><th>Stats</th><th>Beta</th><th>Gamma</th></tr>
@@ -131,5 +88,32 @@
 		<script src="/js/howler2.js"></script>
 		<script src="/nd2settings.js"></script>
 		<script src="//d3js.org/d3.v4.min.js"></script>
+		<script src="/js/yin-yang.js"></script>
+		<script src="/js/multi-timer.js"></script>
+		<script src="/js/swimming-dragon.js"></script>
+		<script>
+			var endSound = new Howl({  src: ["music/templeBell.wav"]});
+			var minSound = new Howl({  src: ["music/ting.wav"]});
+			var timer;
+			var logo=new YinYang("#logo", "#ccf", "#004");
+			var sdSpinner=new YinYang("#sd-spinner", "#ccf", "#004");
+			var ssSpinner=new YinYang("#ss-spinner", "#ccf", "#004");
+			$("body").on("pagecontainerbeforechange", function(e, ui) {
+				if (typeof ui.toPage != "string") return;
+				if (ui.toPage.split('#')[1] != "standing-stake") return;
+				console.log("Starting standing stake");
+				timer=new MultiTimer();
+				timer
+					.on("min-rollover", function() { minSound.play(); })
+					.on("iter-rollover", function() { ssSpinner.toggle(); endSound.play(); })
+					.on("finished", function() { ssSpinner.stop(); });
+				$("#ss-spinner path").click(function() { 
+					timer.start(); 
+					ssSpinner.spin();
+				});
+			});
+			$('#logo path:eq(0)').click(function() { $("body").pagecontainer( "change", "#swimming-dragon"); });
+			$('#logo path:eq(1)').click(function() { $("body").pagecontainer( "change", "#standing-stake"); });
+		</script>
 	</body>
 </html>
