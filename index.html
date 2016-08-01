@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>nativeDroid II - jQueryMobile Template</title>
+		<title>Tai Chi Helper</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
 		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
@@ -49,7 +49,7 @@
 
 		<div data-role="page" id="swimming-dragon">
 			<div data-role="header" data-position="fixed">
-				<a href="#bottomsheet" class="ui-btn ui-btn-right" ><i class="zmdi zmdi-more-vert"></i></a>
+				<a href="#config" class="ui-btn ui-btn-right" ><i class="zmdi zmdi-more-vert"></i></a>
 				<a href="#home" class="ui-btn ui-btn-left" ><i class="zmdi zmdi-home"></i></a>
 				<h1>Swimming Dragon</h1>
 			</div>
@@ -78,6 +78,40 @@
 			</div>
 		</div>
 
+		<div data-role="page" id="config">
+			<div data-role="header" data-position="fixed">
+				<a href="#home" class="ui-btn ui-btn-left" ><i class="zmdi zmdi-home"></i></a>
+				<h1>Tai Chi Helper : Config</h1>
+			</div>
+			<div role="main" class="ui-content">
+				<form>
+					<div data-role="collapsible" data-inset="false">
+						<h4>Standing Stake</h4>
+						<label for="ss-dur" class="select">Duration</label>
+						<select name="ss-dur" id="ss-dur" data-native-menu="false">
+						    <option value="1">1 min</option>
+						    <option value="2" selected="selected">2 mins</option>
+						    <option value="3">3 mins</option>
+						    <option value="4">4 mins</option>
+						    <option value="5">5 mins</option>
+						    <option value="10">10 mins</option>
+						    <option value="15">15 mins</option>
+						    <option value="20">20 mins</option>
+						    <option value="30">30 mins</option>
+						    <option value="45">45 mins</option>
+						    <option value="60">60 mins</option>
+						</select>
+						<label for="ss-iter">Iterations:</label><input type="range" name="ss-iter" id="ss-iter" value="2" min="1" max="12" data-highlight="true">
+					</div>
+					<div data-role="collapsible" data-inset="false">
+						<h4>Swimming Dragon</h4>
+						<label for="sd-mn">Min Tilt:</label><input type="range" name="sd-mn" id="sd-mn" value="10" min="1" max="90" data-highlight="true">
+						<label for="sd-mx">Max Tilt:</label><input type="range" name="sd-mx" id="sd-mx" value="45" min="1" max="90" data-highlight="true">
+						<label for="sd-dur">Max Duration:</label><input type="range" name="sd-dur" id="sd-dur" value="2" min="1" max="5" data-highlight="true">
+					</div>
+				</form>
+			</div>
+		</div>
 
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
@@ -91,6 +125,7 @@
 		<script src="/js/yin-yang.js"></script>
 		<script src="/js/multi-timer.js"></script>
 		<script src="/js/swimming-dragon.js"></script>
+		<script src="/js/spill.js"></script>
 		<style>
 		.scb img { width: 52px; height: 52px;}
 		</style>

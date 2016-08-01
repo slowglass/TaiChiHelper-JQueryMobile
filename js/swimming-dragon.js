@@ -4,6 +4,7 @@ var SwimmingDragon = function(spinner) {
 	this.startSound = new Howl({ src: ["music/ting.wav"], volume: 1.0});
 	this.init();
 	this.spinner = spinner;
+	this.spill = new Spill();
 }
 
 SwimmingDragon.prototype = {
@@ -273,10 +274,11 @@ SwimmingDragon.prototype.updateStats = function(id1, id2, stats, v, alpha)
 
 
 SwimmingDragon.prototype.phoneMove = function(event) {
-	// Make sure value in range [-180,180
+	// Make sure value in range [-180,180]
 	if (event.alpha == null) return;
-	 var alpha = (event.alpha > 180) ? event.alpha-360 : event.alpha;
+	var alpha = (event.alpha > 180) ? event.alpha-360 : event.alpha;
 
+	this.spill.setTilt(event.beta);
      var count=this.data.length;
      var d = { a:alpha, b: event.beta, g:event.gamma, n: count };
      this.data.push(d);
@@ -301,6 +303,7 @@ SwimmingDragon.prototype.start = function()
 	$('#buttons').hide();
 
 	this.startSound.play();
+	this.spill.start();
 	this.callbacks.deviceorientation = function(e) { self.phoneMove(e); };
 	window.addEventListener("deviceorientation", this.callbacks.deviceorientation);
 }
@@ -351,6 +354,8 @@ SwimmingDragon.prototype.stop = function() {
 	this.populate();
 	this.setVisibility();
 	this.startSound.play();
+
+	this.spill.stop();
 	window.removeEventListener("deviceorientation", this.callbacks.deviceorientation);
 }
 
@@ -369,7 +374,7 @@ SwimmingDragon.prototype.prepare = function()
 
 	
 	var startDelay = 5*SECOND;
-	var practiceTime = 2*SECOND;
+	var practiceTime = 20*SECOND;
 	window.setTimeout(
 		function() { 
 			self.start();

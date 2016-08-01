@@ -1,7 +1,11 @@
 var Spill = function() {
   var self=this;
-  this.sound=new Howl({ src: ["music/ting.wav"], volume: 1.0});
-  this.sound.onend(function() { self.setStatusDelay(); }
+  this.sound = new Howl({
+    src: ["music/ting.wav"],
+    volume: 1.0,
+    onend: function() { self.setStatusDelay(); }
+  });
+  
 }
 
 Spill.prototype = {
@@ -11,10 +15,12 @@ Spill.prototype = {
   maxDelay: 2000,
   status: "OFF",
   
+  start: function() { this.setStatusOK(); },
+  stop: function() { this.setStatusOff(); },
   setStatusOff: function() {
     this.status = "OFF";
     this.sound.stop();
-    clearTimeout(this.delayid);
+    window.clearTimeout(this.delayid);
   },
   setStatusOK: function() { this.status = "OK"; },
   setStatusPlay: function() {
@@ -24,7 +30,7 @@ Spill.prototype = {
   setStatusDelay: function() {
     var self = this;
     this.status = "DELAY";
-    this.delayid = setTimeout(funcion() { self.replay(); }, this.delay());
+    this.delayid = window.setTimeout(function() { self.replay(); }, this.delay());
   },
   
   replay: function() {
@@ -35,20 +41,20 @@ Spill.prototype = {
   },
   delay: function() {
     var v=Math.min(Math.max(this.lowerBound,this.tilt),this.upperBound);
-    var d=this.maxDelay*(v-this.lowerBound)/(this.upperBound-this.lowerBound);
+    var d=this.maxDelay-this.maxDelay*(v-this.lowerBound)/(this.upperBound-this.lowerBound);
     return d;
   },
 
   setTilt: function(t) {
-    this.tilt=t;
-    if (t>=this.lowerBound && this.status=="OK")
+    this.tilt=Math.abs(t);
+    if (this.tilt>=this.lowerBound && this.status=="OK")
       this.setStatusPlay();
   },
   
-  setRange = function(mn,mx) {
+  setRange: function(mn,mx) {
     this.lowerBound=mn;
     this.upperBound=mx;
   },
   setMaxDelay: function(d) { this.maxDelay=d; },
-  setMusic = function(url) { this.sound=new Howl({ src: [url], volume: 1.0}); }
+  setMusic: function(url) { this.sound=new Howl({ src: [url], volume: 1.0}); }
 }
