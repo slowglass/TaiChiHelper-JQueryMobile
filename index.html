@@ -152,7 +152,8 @@
 
 			var c;
 			$("body").on("pagecontainerbeforechange", function(e, ui) {
-				if (ui.toPage instanceof jQuery)
+				
+				if (ui.prevPage instanceof jQuery)
 				{
 					switch (ui.prevPage.attr("id"))
 					{
@@ -170,7 +171,8 @@
 							console.log("Starting config");
 							break;
 					}
-				}if (ui.toPage instanceof jQuery)
+				}
+				if (ui.toPage instanceof jQuery)
 				{
 					switch (ui.toPage.attr("id"))
 					{

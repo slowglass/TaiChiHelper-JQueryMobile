@@ -401,6 +401,7 @@ SwimmingDragon.prototype.init = function() {
 	$('#graph').hide();
 	$('#buttons').hide();
 
+	$('#sd-spinner').click(function(e, data) { self.prepare(); });
 	$('#switch-linear').click(function(e, data) { self.toLinear(); });
 	$('#switch-polar').click(function(e, data) { self.toPolar(); });
 	$('#switch-beta').click(function(e, data) { self.toBeta(); });
