@@ -136,10 +136,21 @@ SwimmingDragon.prototype.populate = function()
 	this.drawLine("alpha alpha-z",     x, "n", y, "z",   "#666666", 1.0);
 	this.drawLine("alpha alpha-mn",    x, "n", y, "mnA", "#666666", 1.0);
 
-	this.graph.selectAll('#text-beta').text(Math.max(Math.abs(this.stats.b.mn),this.stats.b.mx).toFixed(1));
-	this.graph.selectAll('#text-gamma').text(Math.max(Math.abs(this.stats.g.mn),this.stats.g.mx).toFixed(1));
+	this.showScore('#text-beta', this.stats.b);
+	this.showScore('#text-gamma', this.stats.g);
 }
 
+SwimmingDragon.prototype.showScore = function(id, stats)
+{
+	var score=Math.max(Math.abs(stats.mn),stats.mx);
+	var col="#cccccc";
+	if (score > this.spill.lowerBound) col="#FF6600";
+	if (score > this.spill.upperBound) col="#660000";
+	this.graph.selectAll(id)
+		.attr('fill', col)
+		.attr('stroke', col)
+		.text(score.toFixed(1));
+}
 SwimmingDragon.prototype.setVisibility = function()
 {
 	var showingSummary = (this.chart.type=="summary");
@@ -278,7 +289,7 @@ SwimmingDragon.prototype.phoneMove = function(event) {
 	if (event.alpha == null) return;
 	var alpha = (event.alpha > 180) ? event.alpha-360 : event.alpha;
 
-	this.spill.setTilt(event.beta);
+	 this.spill.setTilt(Math.max(Math.abs(event.beta), Math.abs(event.gamma)));
      var count=this.data.length;
      var d = { a:alpha, b: event.beta, g:event.gamma, n: count };
      this.data.push(d);
