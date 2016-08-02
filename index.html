@@ -85,7 +85,7 @@
 			</div>
 			<div role="main" class="ui-content">
 				<form>
-					<div data-role="collapsible" data-inset="false">
+					<div data-rolexx="collapsible" data-inset="false">
 						<h4>Standing Stake</h4>
 						<label for="ss-dur" class="select">Duration</label>
 						<select name="ss-dur" id="ss-dur" data-native-menu="false">
@@ -103,11 +103,14 @@
 						</select>
 						<label for="ss-iter">Iterations:</label><input type="range" name="ss-iter" id="ss-iter" value="2" min="1" max="12" data-highlight="true">
 					</div>
-					<div data-role="collapsible" data-inset="false">
+					<hr />
+					<div data-rolexx="collapsible" data-inset="false">
 						<h4>Swimming Dragon</h4>
-						<label for="sd-mn">Min Tilt:</label><input type="range" name="sd-mn" id="sd-mn" value="10" min="1" max="90" data-highlight="true">
-						<label for="sd-mx">Max Tilt:</label><input type="range" name="sd-mx" id="sd-mx" value="45" min="1" max="90" data-highlight="true">
 						<label for="sd-dur">Max Duration:</label><input type="range" name="sd-dur" id="sd-dur" value="2" min="1" max="5" data-highlight="true">
+						<div data-role='rangeslider'>
+							<label for='rangeslider1a'>Tilt:</label><input type='range' name='sd-mn' id='sd-mn' min='1' max='90' value='10'>
+							<label for='rangeslider1b'>Tilt:</label><input type='range' name='sd-mx' id='sd-mx' min='1' max='90' value='45'>
+						</div>
 					</div>
 				</form>
 			</div>
@@ -126,6 +129,7 @@
 		<script src="js/multi-timer.js"></script>
 		<script src="js/swimming-dragon.js"></script>
 		<script src="js/spill.js"></script>
+		<script src="js/config.js"></script>
 		<style>
 		.scb img { width: 52px; height: 52px;}
 		</style>
@@ -138,26 +142,66 @@
 			var ssSpinner=new YinYang("#ss-spinner", "#ccf", "#004");
 			var sd=new SwimmingDragon(sdSpinner);
 			timer=new MultiTimer();
-				timer
-					.on("min-rollover", function() { minSound.play(); })
-					.on("iter-rollover", function() { ssSpinner.toggle(); endSound.play(); })
-					.on("finished", function() { ssSpinner.stop(); });
+			timer
+				.on("min-rollover", function() { minSound.play(); })
+				.on("iter-rollover", function() { ssSpinner.toggle(); endSound.play(); })
+				.on("finished", function() { ssSpinner.stop(); });
 
+
+			$('#logo path:eq(0)').on("click", function() { $("body").pagecontainer( "change", "#swimming-dragon"); });
+			$('#logo path:eq(1)').on("click", function() { $("body").pagecontainer( "change", "#standing-stake"); });
+
+			var c;
 			$("body").on("pagecontainerbeforechange", function(e, ui) {
-				if (typeof ui.toPage != "string") return;
-				if (ui.toPage.split('#')[1] == "standing-stake") 
+				
+				if (ui.prevPage instanceof jQuery)
 				{
-					console.log("Starting standing stake");
-					$("#ss-spinner path").click(function() { timer.start(); ssSpinner.spin(); });
+					switch (ui.prevPage.attr("id"))
+					{
+						case "home":
+							break;
+						case "standing-stake":
+							console.log("Starting standing stake");
+							timer.stop();
+							ssSpinner.stop();
+							break;
+						case "swimming-dragon":
+							console.log("Starting standing stake");
+							$("#sd-spinner path").click(function() { sd.reset(); });
+							break;
+						case "config":
+							console.log("Starting config");
+							break;
+					}
 				}
-				if (ui.toPage.split('#')[1] == "swimming-dragon") 
+				if (ui.toPage instanceof jQuery)
 				{
-					console.log("Starting standing stake");
-					$("#sd-spinner path").click(function() { sd.prepare(); });
+					switch (ui.toPage.attr("id"))
+					{
+						case "home":
+							console.log("Starting home");
+							break;
+						case "standing-stake":
+							console.log("Starting standing stake");
+							$("#ss-spinner path").click(function() { timer.start(); ssSpinner.spinClockwise(); });
+							break;
+						case "swimming-dragon":
+							console.log("Starting standing stake");
+							$("#sd-spinner path").click(function() { sd.reset(); });
+							break;
+						case "config":
+							console.log("Starting config");
+							break;
+					}
 				}
 			});
-			$('#logo path:eq(0)').click(function() { $("body").pagecontainer( "change", "#swimming-dragon"); });
-			$('#logo path:eq(1)').click(function() { $("body").pagecontainer( "change", "#standing-stake"); });
+
+			$(document).on("pagecreate", function() {
+				if (c == null)
+				{
+					c=new Config(timer, sd);
+				}
+			  });
 		</script>
 	</body>
 </html>
