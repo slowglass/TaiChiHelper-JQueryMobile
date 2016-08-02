@@ -191,17 +191,11 @@
 							break;
 						case "config":
 							console.log("Starting config");
+							if (c == null) c=new Config(timer, sd);
 							break;
 					}
 				}
 			});
-
-			$(document).on("pagecreate", function() {
-				if (c == null)
-				{
-					c=new Config(timer, sd);
-				}
-			  });
 		</script>
 	</body>
 </html>
