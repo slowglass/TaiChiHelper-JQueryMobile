@@ -1,9 +1,10 @@
 var Spill = function() {
   var self=this;
-  this.sound = new Howl({
-    src: ["music/ting.wav"],
-    volume: 1.0,
-    onend: function() { self.setStatusDelay(); }
+  this.sound = new Howl({  
+        src: ["music/water.wav"],
+        sprite: { spill: [1500, 950]},
+        volume: 1.0,
+        onend: function() { self.setStatusDelay(); }
   });
   
 }
@@ -25,11 +26,13 @@ Spill.prototype = {
   setStatusOK: function() { this.status = "OK"; },
   setStatusPlay: function() {
     this.status = "PLAY";
-    this.sound.play();
+    this.sound.play("spill");
   },
   setStatusDelay: function() {
     var self = this;
     this.status = "DELAY";
+    var d=this.delay();
+    console.log("Delay: "+d);
     this.delayid = window.setTimeout(function() { self.replay(); }, this.delay());
   },
   

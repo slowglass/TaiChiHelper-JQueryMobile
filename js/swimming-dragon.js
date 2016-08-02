@@ -379,18 +379,26 @@ SwimmingDragon.prototype.prepare = function()
 		function() { 
 			self.start();
 			self.spinner.toggle();
-			window.setTimeout(function() { self.stop(); }, practiceTime);
+			self.timerid=window.setTimeout(function() { self.stop(); }, practiceTime);
 		}, startDelay);
+}
+
+SwimmingDragon.prototype.reset = function() {
+	var self=this;
+	$('#sd-spinner').show();
+	$('#stats').hide();
+	$('#graph').hide();
+	$('#buttons').hide();
+	if (self.timerid!=null) window.clearTimeout(this.timerid);
+	this.timerid=null;
+	this.spill.stop();
 }
 
 SwimmingDragon.prototype.init = function() {
 	var self=this;
-
-	$( document ).on("change" , function(e, data) { self.prepare(); });
-
 	$('#sd-spinner').show();
 	$('#stats').hide();
-	$('#graph').show();
+	$('#graph').hide();
 	$('#buttons').hide();
 
 	$('#switch-linear').click(function(e, data) { self.toLinear(); });
