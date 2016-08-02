@@ -12,7 +12,7 @@ var Config = function(ss, sd) {
 	if (this.ls.sd_mn == undefined) this.ls.sd_mn=15;
 
 
-	$("#ss-dur").val(this.ls.ss_dur).selectmenu().selectmenu("refresh", true).on("change", function() { c.update(); });
+	$("#ss-dur").val(this.ls.ss_dur).selectmenu("refresh", true).on("change", function() { c.update(); });
 	$("#ss-iter").val(this.ls.ss_iter).slider("refresh").on("change", function() { c.update(); });
 
 	$("#sd-dur").val(this.ls.sd_dur).slider("refresh").on("change", function() { c.update(); });
