@@ -85,7 +85,7 @@
 			</div>
 			<div role="main" class="ui-content">
 				<form>
-					<div data-role="collapsible" data-inset="false">
+					<div data-rolexx="collapsible" data-inset="false">
 						<h4>Standing Stake</h4>
 						<label for="ss-dur" class="select">Duration</label>
 						<select name="ss-dur" id="ss-dur" data-native-menu="false">
@@ -103,14 +103,15 @@
 						</select>
 						<label for="ss-iter">Iterations:</label><input type="range" name="ss-iter" id="ss-iter" value="2" min="1" max="12" data-highlight="true">
 					</div>
-					<div data-role="collapsible" data-inset="false">
+					<hr />
+					<div data-rolexx="collapsible" data-inset="false">
 						<h4>Swimming Dragon</h4>
-						<label for="sd-mn">Min Tilt:</label><input type="range" name="sd-mn" id="sd-mn" value="10" min="1" max="90" data-highlight="true">
-						<label for="sd-mx">Max Tilt:</label><input type="range" name="sd-mx" id="sd-mx" value="45" min="1" max="90" data-highlight="true">
 						<label for="sd-dur">Max Duration:</label><input type="range" name="sd-dur" id="sd-dur" value="2" min="1" max="5" data-highlight="true">
+						<div data-role='rangeslider'>
+							<label for='rangeslider1a'>Tilt:</label><input type='range' name='sd-mn' id='sd-mn' min='1' max='90' value='10'>
+							<label for='rangeslider1b'>Tilt:</label><input type='range' name='sd-mx' id='sd-mx' min='1' max='90' value='45'>
+						</div>
 					</div>
-					<a href="#" class="ui-btn ui-btn-inline">Save</a>
-					<a href="#" class="ui-btn ui-btn-inline">Cancel</a>
 				</form>
 			</div>
 		</div>
@@ -162,6 +163,7 @@
 						case "standing-stake":
 							console.log("Starting standing stake");
 							timer.stop();
+							ssSpinner.stop();
 							break;
 						case "swimming-dragon":
 							console.log("Starting standing stake");
@@ -181,7 +183,7 @@
 							break;
 						case "standing-stake":
 							console.log("Starting standing stake");
-							$("#ss-spinner path").click(function() { timer.stop(); ssSpinner.stop(); });
+							$("#ss-spinner path").click(function() { timer.start(); ssSpinner.spinClockwise(); });
 							break;
 						case "swimming-dragon":
 							console.log("Starting standing stake");
@@ -195,10 +197,10 @@
 			});
 
 			$(document).on("pagecreate", function() {
-				c=new Config(timer, sd);
-				$("form select").on("change", function() { c.update(); });
-				$("form .ui-slider").on("change", function() { c.update(); });
-				$("form select").on("change", function() { c.update(); });
+				if (c == null)
+				{
+					c=new Config(timer, sd);
+				}
 			  });
 		</script>
 	</body>
