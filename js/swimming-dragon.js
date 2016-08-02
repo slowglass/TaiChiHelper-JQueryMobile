@@ -374,8 +374,7 @@ SwimmingDragon.prototype.prepare = function()
 {
 	var self=this;
 	console.log("PREPARE");
-	$("#sd-vis").remove();
-
+	$('#sd-spinner').show();
 	$('#stats').hide();
 	$('#graphs').show();
 	$('#buttons').hide();
@@ -401,8 +400,10 @@ SwimmingDragon.prototype.reset = function() {
 	$('#graph').hide();
 	$('#buttons').hide();
 	if (self.timerid!=null) window.clearTimeout(this.timerid);
+	window.removeEventListener("deviceorientation", this.callbacks.deviceorientation);
 	this.timerid=null;
 	this.spill.stop();
+	console.log("SD: RESET");
 }
 
 SwimmingDragon.prototype.init = function() {
