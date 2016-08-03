@@ -1,6 +1,8 @@
 var Config = function(ss, sd) {
 	this.ss = ss;
 	this.sd = sd;
+
+	this.bound = false;
 	if (typeof(Storage) === "undefined") 
 		this.ls = {};
 	else
@@ -11,21 +13,33 @@ var Config = function(ss, sd) {
 	if (this.ls.sd_mx == undefined) this.ls.sd_mx=15;
 	if (this.ls.sd_mn == undefined) this.ls.sd_mn=15;
 
+	this.ss.setIterations(this.ls.ss_iter);
+	this.ss.setDuration(this.ls.ss_dur*60);
 
-	$("#ss-dur").val(this.ls.ss_dur).selectmenu("refresh", true).on("change", function() { c.update(); });
-	$("#ss-iter").val(this.ls.ss_iter).slider("refresh").on("change", function() { c.update(); });
+	this.sd.spill.setMaxDelay(this.ls.sd_dur);
+	this.sd.spill.setRange(this.ls.sd_mn, this.ls.sd_mx);
 
-	$("#sd-dur").val(this.ls.sd_dur).slider("refresh").on("change", function() { c.update(); });
-	$("#sd-mn").val(this.ls.sd_mx).slider("refresh").on("change", function() { c.update(); });
-	$("#sd-mx").val(this.ls.sd_mx).slider("refresh").on("change", function() { c.update(); });
 
-	this.update();
-
+	console.log("SS:"+this.ls.ss_dur+", "+this.ls.ss_iter);
+	console.log("SD:"+this.ls.sd_dur+", ["+this.ls.sd_mn +", "+this.ls.sd_mx+"]");
 }
 
 Config.prototype = {
 	ss: {},
 	sd: {},
+
+	bind: function() {
+		var self=this;
+		if (this.bound) return;
+		this.bound = true;
+
+		$("#ss-dur").val(this.ls.ss_dur).selectmenu("refresh", true).on("change", function() { self.update(); });
+		$("#ss-iter").val(this.ls.ss_iter).slider("refresh").on("change", function() { self.update(); });
+
+		$("#sd-dur").val(this.ls.sd_dur).slider("refresh").on("change", function() { self.update(); });
+		$("#sd-mn").val(this.ls.sd_mx).slider("refresh").on("change", function() { self.update(); });
+		$("#sd-mx").val(this.ls.sd_mx).slider("refresh").on("change", function() { self.update(); });
+	},
 
 	update: function() {
 		this.ls.ss_dur=$("#ss-dur").val();
