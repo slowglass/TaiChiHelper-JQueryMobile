@@ -1,5 +1,6 @@
 var MultiTimer = function() {
   this.updateDisplay();
+  $("#ss-spinner path").click(function() { timer.start(); ssSpinner.spinClockwise(); });
 }
 
 MultiTimer.prototype = {
@@ -24,6 +25,7 @@ MultiTimer.prototype = {
   },
   
   tick: function() {
+    console.log("SS TICK:"+this.iter+", "+this.min+", "+this.sec);
     var callback=null;
     this.sec--;
     if (this.sec<0) { this.sec= 59; this.min--; callback=this.minRolloverCB; }

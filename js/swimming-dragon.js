@@ -23,6 +23,7 @@ SwimmingDragon.prototype = {
   	dataMappers: {}
   },
   callbacks: {},
+  timerids : { start: null, stop: null},
   testMode: "NONE"
 }
 
@@ -374,8 +375,7 @@ SwimmingDragon.prototype.prepare = function()
 {
 	var self=this;
 	console.log("PREPARE");
-	$("#sd-vis").remove();
-
+	$('#sd-spinner').show();
 	$('#stats').hide();
 	$('#graphs').show();
 	$('#buttons').hide();
@@ -386,13 +386,14 @@ SwimmingDragon.prototype.prepare = function()
 	
 	var startDelay = 5*SECOND;
 	var practiceTime = 20*SECOND;
-	window.setTimeout(
+	this.timerids.start = window.setTimeout(
 		function() { 
 			self.start();
 			self.spinner.toggle();
-			self.timerid=window.setTimeout(function() { self.stop(); }, practiceTime);
+			self.timerids.stop=window.setTimeout(function() { self.stop(); }, practiceTime);
 		}, startDelay);
 }
+
 
 SwimmingDragon.prototype.reset = function() {
 	var self=this;
@@ -400,9 +401,13 @@ SwimmingDragon.prototype.reset = function() {
 	$('#stats').hide();
 	$('#graph').hide();
 	$('#buttons').hide();
-	if (self.timerid!=null) window.clearTimeout(this.timerid);
-	this.timerid=null;
+	if (this.timerids.start!=null) window.clearTimeout(this.timerids.start);
+	if (this.timerids.stop!=null) window.clearTimeout(this.timerids.stop);
+	window.removeEventListener("deviceorientation", this.callbacks.deviceorientation);
+	this.timerids = { start: null, stop: null},
 	this.spill.stop();
+	this.spinner.stop();
+	console.log("SD: RESET");
 }
 
 SwimmingDragon.prototype.init = function() {

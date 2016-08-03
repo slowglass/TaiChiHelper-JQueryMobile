@@ -136,12 +136,13 @@
 		<script>
 			var endSound = new Howl({  src: ["music/templeBell.wav"]});
 			var minSound = new Howl({  src: ["music/ting.wav"]});
-			var timer;
+			var timer=new MultiTimer()
 			var logo=new YinYang("#logo", "#ccf", "#004");
 			var sdSpinner=new YinYang("#sd-spinner", "#ccf", "#004");
 			var ssSpinner=new YinYang("#ss-spinner", "#ccf", "#004");
 			var sd=new SwimmingDragon(sdSpinner);
-			timer=new MultiTimer();
+			var config=new Config(timer, sd);
+
 			timer
 				.on("min-rollover", function() { minSound.play(); })
 				.on("iter-rollover", function() { ssSpinner.toggle(); endSound.play(); })
@@ -151,47 +152,41 @@
 			$('#logo path:eq(0)').on("click", function() { $("body").pagecontainer( "change", "#swimming-dragon"); });
 			$('#logo path:eq(1)').on("click", function() { $("body").pagecontainer( "change", "#standing-stake"); });
 
-			var c;
 			$("body").on("pagecontainerbeforechange", function(e, ui) {
 				
 				if (ui.prevPage instanceof jQuery)
 				{
+					console.log("Stopping " + ui.prevPage.attr("id"));
 					switch (ui.prevPage.attr("id"))
 					{
 						case "home":
 							break;
 						case "standing-stake":
-							console.log("Starting standing stake");
 							timer.stop();
 							ssSpinner.stop();
 							break;
 						case "swimming-dragon":
-							console.log("Starting standing stake");
-							$("#sd-spinner path").click(function() { sd.reset(); });
+							sd.reset();
 							break;
 						case "config":
-							console.log("Starting config");
 							break;
 					}
 				}
 				if (ui.toPage instanceof jQuery)
 				{
+					console.log("Starting " + ui.toPage.attr("id"));
 					switch (ui.toPage.attr("id"))
 					{
 						case "home":
-							console.log("Starting home");
 							break;
 						case "standing-stake":
-							console.log("Starting standing stake");
-							$("#ss-spinner path").click(function() { timer.start(); ssSpinner.spinClockwise(); });
+							ssSpinner.stop();
 							break;
 						case "swimming-dragon":
-							console.log("Starting standing stake");
-							$("#sd-spinner path").click(function() { sd.reset(); });
+							sd.reset();
 							break;
 						case "config":
-							console.log("Starting config");
-							if (c == null) c=new Config(timer, sd);
+							config.bind();
 							break;
 					}
 				}
