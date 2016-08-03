@@ -167,7 +167,7 @@
 							break;
 						case "swimming-dragon":
 							console.log("Starting standing stake");
-							$("#sd-spinner path").click(function() { sd.reset(); });
+							sd.reset();
 							break;
 						case "config":
 							console.log("Starting config");
@@ -182,12 +182,12 @@
 							console.log("Starting home");
 							break;
 						case "standing-stake":
+							ssSpinner.stop();
 							console.log("Starting standing stake");
-							$("#ss-spinner path").click(function() { timer.start(); ssSpinner.spinClockwise(); });
 							break;
 						case "swimming-dragon":
 							console.log("Starting standing stake");
-							$("#sd-spinner path").click(function() { sd.reset(); });
+							sd.reset();
 							break;
 						case "config":
 							console.log("Starting config");
