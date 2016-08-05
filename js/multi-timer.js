@@ -1,6 +1,5 @@
 var MultiTimer = function() {
   this.updateDisplay();
-  $("#ss-spinner path").click(function() { timer.start(); ssSpinner.spinClockwise(); });
 }
 
 MultiTimer.prototype = {
@@ -8,8 +7,10 @@ MultiTimer.prototype = {
   sec: 0, min: 0, iter: -1,
   timerid: null,
   
+
   start: function() {
     var self=this;
+    if (this.timerid!=null) clearInterval(this.timerid);
     this.timerid=setInterval(function() { self.tick(); }, 1000);
     this.sec=10;
     this.min=0;
@@ -68,3 +69,7 @@ MultiTimer.prototype = {
   setDuration: function(s) { this.timer.sec=s%60; this.timer.min=s/60;  this.updateDisplay(); }
 }
   
+
+$("body").one("pagecontainerchange", function() { 
+    $("#ss-spinner path").click(function() { timer.start(); ssSpinner.spinClockwise(); });
+});
