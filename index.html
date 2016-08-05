@@ -15,6 +15,15 @@
 		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
 	</head>
 	<body>
+		<script>
+		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+		  ga('create', 'UA-82069629-1', 'auto');
+		  ga('send', 'pageview');
+		</script>
 		<style>
 		.centered { margin: auto; display: block;}
 		div.timer
@@ -26,9 +35,11 @@
 		}
 		</style>
 		
+
 		<div data-role="page" id="home">
 			<div data-role="header" data-position="fixed">
 				<a href="#config" class="ui-btn ui-btn-right" ><i class="zmdi zmdi-more-vert"></i></a>
+				<a href="#leftpanel" class="ui-btn ui-btn-left" ><i class="zmdi zmdi-home"></i></a>
 				<h1>Tai Chi Helper</h1>
 			</div>
 			<div role="main" class="ui-content">
@@ -39,7 +50,7 @@
 		<div data-role="page" id="standing-stake">
 			<div data-role="header" data-position="fixed">
 				<a href="#config" class="ui-btn ui-btn-right" ><i class="zmdi zmdi-more-vert"></i></a>
-				<a href="#home" class="ui-btn ui-btn-left" ><i class="zmdi zmdi-home"></i></a>
+				<a href="#leftpanel" class="ui-btn ui-btn-left" ><i class="zmdi zmdi-home"></i></a>
 				<h1>Standing Stake</h1>
 			</div>
 			<div role="main" class="ui-content">
