@@ -146,19 +146,12 @@
 		.scb img { width: 52px; height: 52px;}
 		</style>
 		<script>
-			var endSound = new Howl({  src: ["music/templeBell.wav"]});
-			var minSound = new Howl({  src: ["music/ting.wav"]});
-			var timer=new MultiTimer()
+			var timer=new MultiTimer("#ss-spinner")
 			var logo=new YinYang("#logo", "#ccf", "#004");
 			var sdSpinner=new YinYang("#sd-spinner", "#ccf", "#004");
-			var ssSpinner=new YinYang("#ss-spinner", "#ccf", "#004");
 			var sd=new SwimmingDragon(sdSpinner);
 			var config=new Config(timer, sd);
 
-			timer
-				.on("min-rollover", function() { minSound.play(); })
-				.on("iter-rollover", function() { ssSpinner.toggle(); endSound.play(); })
-				.on("finished", function() { ssSpinner.stop(); });
 
 
 			$('#logo path:eq(0)').on("click", function() { $("body").pagecontainer( "change", "#swimming-dragon"); });
@@ -175,7 +168,6 @@
 							break;
 						case "standing-stake":
 							timer.stop();
-							ssSpinner.stop();
 							break;
 						case "swimming-dragon":
 							sd.reset();
@@ -192,7 +184,7 @@
 						case "home":
 							break;
 						case "standing-stake":
-							ssSpinner.stop();
+							timer.stop();
 							break;
 						case "swimming-dragon":
 							sd.reset();
