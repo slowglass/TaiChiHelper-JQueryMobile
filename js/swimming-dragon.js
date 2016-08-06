@@ -5,6 +5,7 @@ var SwimmingDragon = function(spinner) {
 	this.init();
 	this.spinner = spinner;
 	this.spill = new Spill();
+	this.lock = new WakeLocker();
 }
 
 SwimmingDragon.prototype = {
@@ -368,6 +369,7 @@ SwimmingDragon.prototype.stop = function() {
 	this.startSound.play();
 
 	this.spill.stop();
+    this.lock.unlock();
 	window.removeEventListener("deviceorientation", this.callbacks.deviceorientation);
 }
 
@@ -381,6 +383,7 @@ SwimmingDragon.prototype.prepare = function()
 	$('#buttons').hide();
 
 	this.spinner.spin();
+    this.lock.lockCPU();
 
 
 	
@@ -406,7 +409,8 @@ SwimmingDragon.prototype.reset = function() {
 	window.removeEventListener("deviceorientation", this.callbacks.deviceorientation);
 	this.timerids = { start: null, stop: null},
 	this.spill.stop();
-	this.spinner.stop();
+	this.spinner.stop();	
+    this.lock.unlock();
 	console.log("SD: RESET");
 }
 
@@ -417,11 +421,15 @@ SwimmingDragon.prototype.init = function() {
 	$('#graph').hide();
 	$('#buttons').hide();
 
-	$('#sd-spinner').click(function(e, data) { self.prepare(); });
-	$('#switch-linear').click(function(e, data) { self.toLinear(); });
-	$('#switch-polar').click(function(e, data) { self.toPolar(); });
-	$('#switch-beta').click(function(e, data) { self.toBeta(); });
-	$('#switch-gamma').click(function(e, data) { self.toGamma(); });
-	$('#switch-stats').click(function(e, data) { self.toStats(); });
-	$('#restart').click(function(e, data) { self.prepare(); });
+	$("body").one("pagecontainerchange", function() { 
+		$('#sd-spinner').click(function(e, data) { self.prepare(); });
+		$('#switch-linear').click(function(e, data) { self.toLinear(); });
+		$('#switch-polar').click(function(e, data) { self.toPolar(); });
+		$('#switch-beta').click(function(e, data) { self.toBeta(); });
+		$('#switch-gamma').click(function(e, data) { self.toGamma(); });
+		$('#switch-stats').click(function(e, data) { self.toStats(); });
+		$('#restart').click(function(e, data) { self.prepare(); });
+	});
+	
 }
+
