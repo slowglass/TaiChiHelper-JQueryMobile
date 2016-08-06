@@ -2,6 +2,7 @@
 
 var YinYang = function(loc, fg, bg) {
   this._init_();
+  this.jq=$(loc);
   $(loc).append('<div style="margin:0; height: 400px;"></div>');
   $pdiv=$(loc).find("div");
   $pdiv.append('<div style="margin:auto; width: 256px; height: 256px;"></div>');
@@ -56,6 +57,10 @@ YinYang.prototype = {
       YinYang.prototype.haskeyframes = true;
     }
   },
+
+  show: function() { this.jq.show(); },
+  hide: function() { this.jq.hide(); },
+  click: function(cb) { this.jq.click(cb); },
 
   stop: function() {
     this.yin .css("animation-play-state", "paused");
