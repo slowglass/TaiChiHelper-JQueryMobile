@@ -1,5 +1,6 @@
 var MultiTimer = function() {
   this.updateDisplay();
+  this.lock = new WakeLocker();
 }
 
 MultiTimer.prototype = {
@@ -10,6 +11,7 @@ MultiTimer.prototype = {
 
   start: function() {
     var self=this;
+    this.lock.lockScreen();
     if (this.timerid!=null) clearInterval(this.timerid);
     this.timerid=setInterval(function() { self.tick(); }, 1000);
     this.sec=10;
@@ -20,6 +22,7 @@ MultiTimer.prototype = {
   
   stop: function() {
     if (this.timerid!=null) clearInterval(this.timerid);
+    this.lock.unlock();
     this.timerid=null;
     this.iter=-1;
     this.updateDisplay();
