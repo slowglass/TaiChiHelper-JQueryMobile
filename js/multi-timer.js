@@ -1,6 +1,18 @@
-var MultiTimer = function() {
+var MultiTimer = function(spinnerId) {
+  var self=this;
   this.updateDisplay();
   this.lock = new WakeLocker();
+  this.spinner = new YinYang(spinnerId, "#ccf", "#004");
+  this.endSound = new Howl({  src: ["music/templeBell.wav"]});
+  this.minSound = new Howl({  src: ["music/ting.wav"]});
+
+  this.state = "STATIONARY";
+  $("body").one("pagecontainerchange", function() { 
+    $(spinnerId +" path").click(function() { if (self.state == "SPINNING") self.stop(); else self.start(); });
+    self
+        .on("min-rollover", function() { self.minSound.play(); })
+        .on("iter-rollover", function() { self.endSound.play(); });
+  });
 }
 
 MultiTimer.prototype = {
@@ -11,6 +23,8 @@ MultiTimer.prototype = {
 
   start: function() {
     var self=this;
+    this.state = "SPINNING";
+    this.spinner.spinClockwise();
     this.lock.lockScreen();
     if (this.timerid!=null) clearInterval(this.timerid);
     this.timerid=setInterval(function() { self.tick(); }, 1000);
@@ -22,6 +36,8 @@ MultiTimer.prototype = {
   
   stop: function() {
     if (this.timerid!=null) clearInterval(this.timerid);
+    this.state = "STATIONARY";
+    this.spinner.stop();
     this.lock.unlock();
     this.timerid=null;
     this.iter=-1;
@@ -71,8 +87,3 @@ MultiTimer.prototype = {
   setIterations: function(i) { this.timer.iter=i; this.updateDisplay(); },
   setDuration: function(s) { this.timer.sec=s%60; this.timer.min=s/60;  this.updateDisplay(); }
 }
-  
-
-$("body").one("pagecontainerchange", function() { 
-    $("#ss-spinner path").click(function() { timer.start(); ssSpinner.spinClockwise(); });
-});

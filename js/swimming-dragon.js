@@ -1,11 +1,12 @@
 var SECOND = 1000;
 
-var SwimmingDragon = function(spinner) {
+var SwimmingDragon = function(spinnerId) {
 	this.startSound = new Howl({ src: ["music/ting.wav"], volume: 1.0});
-	this.init();
-	this.spinner = spinner;
+  	this.spinner = new YinYang(spinnerId, "#ccf", "#004");
 	this.spill = new Spill();
 	this.lock = new WakeLocker();
+	this.init();
+	this.state = "READY";
 }
 
 SwimmingDragon.prototype = {
@@ -319,13 +320,14 @@ SwimmingDragon.prototype.start = function()
 	this.spill.start();
 	this.callbacks.deviceorientation = function(e) { self.phoneMove(e); };
 	window.addEventListener("deviceorientation", this.callbacks.deviceorientation);
+	this.state = "SPINNING";
 }
 
 SwimmingDragon.prototype.stop = function() {
 	console.log("STOP");
 	$("#graphs").css("height", "690px")
 	$("#graphs").css("width", "340px");
-	$('#sd-spinner').hide();
+	this.spinner.hide();
 	
 	this.graph = d3.select("#graphs").append("svg:svg")
 		.attr("id", "sd-vis")
@@ -370,6 +372,7 @@ SwimmingDragon.prototype.stop = function() {
 
 	this.spill.stop();
     this.lock.unlock();
+	this.state = "DONE";
 	window.removeEventListener("deviceorientation", this.callbacks.deviceorientation);
 }
 
@@ -377,7 +380,7 @@ SwimmingDragon.prototype.prepare = function()
 {
 	var self=this;
 	console.log("PREPARE");
-	$('#sd-spinner').show();
+	this.spinner.show();
 	$('#stats').hide();
 	$('#graphs').show();
 	$('#buttons').hide();
@@ -395,12 +398,13 @@ SwimmingDragon.prototype.prepare = function()
 			self.spinner.toggle();
 			self.timerids.stop=window.setTimeout(function() { self.stop(); }, practiceTime);
 		}, startDelay);
-}
 
+	this.state = "PREPARE";
+}
 
 SwimmingDragon.prototype.reset = function() {
 	var self=this;
-	$('#sd-spinner').show();
+	this.spinner.show();
 	$('#stats').hide();
 	$('#graph').hide();
 	$('#buttons').hide();
@@ -412,17 +416,31 @@ SwimmingDragon.prototype.reset = function() {
 	this.spinner.stop();	
     this.lock.unlock();
 	console.log("SD: RESET");
+	this.state = "READY";
+}
+
+SwimmingDragon.prototype.click = function() {
+	switch (this.state)
+	{
+		case "READY":
+		case "DONE": 
+			this.prepare(); break;;
+		case "PREPARE":
+		case "SPINNING":
+			this.reset(); break;;
+	}				
 }
 
 SwimmingDragon.prototype.init = function() {
 	var self=this;
-	$('#sd-spinner').show();
+	this.spinner.show();
 	$('#stats').hide();
 	$('#graph').hide();
 	$('#buttons').hide();
+	this.state = "READY";
 
 	$("body").one("pagecontainerchange", function() { 
-		$('#sd-spinner').click(function(e, data) { self.prepare(); });
+		self.spinner.click(function(e, data) { self.click(); });
 		$('#switch-linear').click(function(e, data) { self.toLinear(); });
 		$('#switch-polar').click(function(e, data) { self.toPolar(); });
 		$('#switch-beta').click(function(e, data) { self.toBeta(); });
