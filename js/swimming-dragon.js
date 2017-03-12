@@ -304,7 +304,6 @@ SwimmingDragon.prototype.phoneMove = function(event) {
 SwimmingDragon.prototype.start = function()
 {
 	var self=this;
-	console.log("START");
 
 	this.data = [];
 	this.stats.b = { num: 0, asum:0, sum:0, ssum:0, mx: -10000, amx: -10000, mn: 10000 };
@@ -321,12 +320,13 @@ SwimmingDragon.prototype.start = function()
 	this.callbacks.deviceorientation = function(e) { self.phoneMove(e); };
 	window.addEventListener("deviceorientation", this.callbacks.deviceorientation);
 	this.state = "SPINNING";
+    debug.log("MultiTimer", "Start");
 }
 
 SwimmingDragon.prototype.stop = function() {
-	console.log("STOP");
 	$("#graphs").css("height", "690px")
 	$("#graphs").css("width", "340px");
+	$("#graphs").empty();
 	this.spinner.hide();
 	
 	this.graph = d3.select("#graphs").append("svg:svg")
@@ -373,16 +373,19 @@ SwimmingDragon.prototype.stop = function() {
 	this.spill.stop();
     this.lock.unlock();
 	this.state = "DONE";
+    debug.log("MultiTimer", "Stop");
 	window.removeEventListener("deviceorientation", this.callbacks.deviceorientation);
 }
 
 SwimmingDragon.prototype.prepare = function()
 {
 	var self=this;
-	console.log("PREPARE");
 	this.spinner.show();
 	$('#stats').hide();
 	$('#graphs').show();
+	$("#graphs").css("height", "0px")
+	$("#graphs").css("width", "340px");
+	$("#graphs").empty();
 	$('#buttons').hide();
 
 	this.spinner.spin();
@@ -400,6 +403,7 @@ SwimmingDragon.prototype.prepare = function()
 		}, startDelay);
 
 	this.state = "PREPARE";
+    debug.log("MultiTimer", "Prepare");
 }
 
 SwimmingDragon.prototype.reset = function() {
@@ -415,8 +419,8 @@ SwimmingDragon.prototype.reset = function() {
 	this.spill.stop();
 	this.spinner.stop();	
     this.lock.unlock();
-	console.log("SD: RESET");
 	this.state = "READY";
+    debug.log("MultiTimer", "Reset");
 }
 
 SwimmingDragon.prototype.click = function() {
@@ -438,6 +442,7 @@ SwimmingDragon.prototype.init = function() {
 	$('#graph').hide();
 	$('#buttons').hide();
 	this.state = "READY";
+    debug.log("MultiTimer", "Init");
 
 	$("body").one("pagecontainerchange", function() { 
 		self.spinner.click(function(e, data) { self.click(); });

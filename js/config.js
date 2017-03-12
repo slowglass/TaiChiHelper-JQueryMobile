@@ -19,9 +19,8 @@ var Config = function(ss, sd) {
 	this.sd.spill.setMaxDelay(this.ls.sd_dur);
 	this.sd.spill.setRange(this.ls.sd_mn, this.ls.sd_mx);
 
-
-	console.log("SS:"+this.ls.ss_dur+", "+this.ls.ss_iter);
-	console.log("SD:"+this.ls.sd_dur+", ["+this.ls.sd_mn +", "+this.ls.sd_mx+"]");
+	debug.log("Config", "SS => "+this.ls.ss_dur+", "+this.ls.ss_iter);
+	debug.log("Config", "SD =>"+this.ls.sd_dur+", ["+this.ls.sd_mn +", "+this.ls.sd_mx+"]");
 }
 
 Config.prototype = {
@@ -56,7 +55,7 @@ Config.prototype = {
 		this.sd.spill.setRange(this.ls.sd_mn, this.ls.sd_mx);
 
 
-		console.log("SS:"+this.ls.ss_dur+", "+this.ls.ss_iter);
-		console.log("SD:"+this.ls.sd_dur+", ["+this.ls.sd_mn +", "+this.ls.sd_mx+"]");
+		debug.log("Config", "SS => "+this.ls.ss_dur+", "+this.ls.ss_iter);
+		debug.log("Config", "SD =>"+this.ls.sd_dur+", ["+this.ls.sd_mn +", "+this.ls.sd_mx+"]");
 	}
 }
