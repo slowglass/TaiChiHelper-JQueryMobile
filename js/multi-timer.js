@@ -84,8 +84,6 @@ MultiTimer.prototype = {
   },
   
   getIterations: function(i) { return this.timer.iter; },
-  getDuration: function(m,s) { return this.timer.se + this.timer.min*60; },
-  getDuration: function(m,s) { this.timer.sec=s; this.timer.min=m; },
   setIterations: function(i) { this.timer.iter=i; this.updateDisplay(); },
-  setDuration: function(s) { this.timer.sec=s%60; this.timer.min=s/60;  this.updateDisplay(); }
+  setDuration: function(s) { var secs = parseInt(s, 10); this.timer.sec=secs%60; this.timer.min=Math.floor(secs/60);  this.updateDisplay(); }
 }

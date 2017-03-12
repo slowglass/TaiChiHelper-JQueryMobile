@@ -13,8 +13,9 @@ var Config = function(ss, sd) {
 	if (this.ls.sd_mx == undefined) this.ls.sd_mx=15;
 	if (this.ls.sd_mn == undefined) this.ls.sd_mn=15;
 
+
 	this.ss.setIterations(this.ls.ss_iter);
-	this.ss.setDuration(this.ls.ss_dur*60);
+	this.ss.setDuration(this.ls.ss_dur);
 
 	this.sd.spill.setMaxDelay(this.ls.sd_dur);
 	this.sd.spill.setRange(this.ls.sd_mn, this.ls.sd_mx);
@@ -49,7 +50,7 @@ Config.prototype = {
 		this.ls.sd_mn=$("#sd-mn").val();
 
 		this.ss.setIterations(this.ls.ss_iter);
-		this.ss.setDuration(this.ls.ss_dur*60);
+		this.ss.setDuration(this.ls.ss_dur);
 
 		this.sd.spill.setMaxDelay(this.ls.sd_dur);
 		this.sd.spill.setRange(this.ls.sd_mn, this.ls.sd_mx);
