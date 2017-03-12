@@ -22,17 +22,25 @@ Spill.prototype = {
     this.status = "OFF";
     this.sound.stop();
     window.clearTimeout(this.delayid);
+
+    debug.log("Spill", "Stop");
   },
-  setStatusOK: function() { this.status = "OK"; },
+  setStatusOK: function() { 
+    debug.log("Spill", "Start");
+    this.status = "OK"; 
+  },
   setStatusPlay: function() {
     this.status = "PLAY";
     this.sound.play("spill");
+
+    debug.log("Spill", "Audio Warning");
   },
   setStatusDelay: function() {
     var self = this;
     this.status = "DELAY";
     var d=this.delay();
-    console.log("Delay: "+d);
+
+    debug.log("Spill", "Set Delay ("+d+")");
     this.delayid = window.setTimeout(function() { self.replay(); }, this.delay());
   },
   
@@ -50,6 +58,8 @@ Spill.prototype = {
 
   setTilt: function(t) {
     this.tilt=Math.abs(t);
+
+    debug.log("Spill_TRACE", "Tilt + ("+t+")");
     if (this.tilt>=this.lowerBound && this.status=="OK")
       this.setStatusPlay();
   },

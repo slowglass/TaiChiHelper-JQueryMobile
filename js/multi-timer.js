@@ -32,6 +32,7 @@ MultiTimer.prototype = {
     this.min=0;
     this.iter=this.timer.iter;
     this.updateDisplay();
+    debug.log("MultiTimer", "Start");
   },
   
   stop: function() {
@@ -42,10 +43,11 @@ MultiTimer.prototype = {
     this.timerid=null;
     this.iter=-1;
     this.updateDisplay();
+    debug.log("MultiTimer", "Stop");
   },
   
   tick: function() {
-    console.log("SS TICK:"+this.iter+", "+this.min+", "+this.sec);
+    debug.log("MultiTimer", "TICK:"+this.iter+", "+this.min+", "+this.sec);
     var callback=null;
     this.sec--;
     if (this.sec<0) { this.sec= 59; this.min--; callback=this.minRolloverCB; }

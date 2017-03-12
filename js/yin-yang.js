@@ -58,22 +58,25 @@ YinYang.prototype = {
     }
   },
 
-  show: function() { this.jq.show(); },
-  hide: function() { this.jq.hide(); },
-  click: function(cb) { this.jq.click(cb); },
+  show: function() { debug.log("YinYang", "Show"); this.jq.show(); },
+  hide: function() { debug.log("YinYang", "Hide"); this.jq.hide(); },
+  click: function(cb) { debug.log("YinYang", "Click"); this.jq.click(cb); },
 
   stop: function() {
+    debug.log("YinYang", "Stop"); 
     this.yin .css("animation-play-state", "paused");
     this.yang.css("animation-play-state", "paused");
   },
   
   spinClockwise: function() {
+    debug.log("YinYang", "SpinClockwise"); 
     this.spinDir=1;
     this.yin .css("animation-play-state", "running");
     this.yang.css({"animation-play-state": "paused"});
   },
 
   spinAnticlockwise: function() {
+    debug.log("YinYang", "SpinAnticlockwise"); 
     this.spinDir= -1;
     this.yin .css("animation-play-state", "paused");
     this.yang.css({"animation-play-state": "running"});

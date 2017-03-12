@@ -172,27 +172,28 @@
 		<script src="js/multi-timer.js"></script>
 		<script src="js/swimming-dragon.js"></script>
 		<script src="js/spill.js"></script>
+		<script src="js/debug.js"></script>
 		<script src="js/config.js"></script>
 		<script src="js/wake-lock.js"></script>
 		<style>
 		.scb img { width: 52px; height: 52px;}
 		</style>
 		<script>
+			var debug=new Debug("#debug_opts");
 			var timer=new MultiTimer("#ss-spinner")
 			var logo=new YinYang("#logo", "#ccf", "#004");
 			var sd=new SwimmingDragon("#sd-spinner");
 			var config=new Config(timer, sd);
 
 
-
 			$('#logo path:eq(0)').on("click", function() { $("body").pagecontainer( "change", "#swimming-dragon"); });
 			$('#logo path:eq(1)').on("click", function() { $("body").pagecontainer( "change", "#standing-stake"); });
 
 			$("body").on("pagecontainerbeforechange", function(e, ui) {
-				
+				if (!ui.toPage instanceof jQuery) return;
 				if (ui.prevPage instanceof jQuery)
 				{
-					console.log("Stopping " + ui.prevPage.attr("id"));
+					debug.log("Index", "Stopping " + ui.prevPage.attr("id"));
 					switch (ui.prevPage.attr("id"))
 					{
 						case "home":
@@ -209,7 +210,7 @@
 				}
 				if (ui.toPage instanceof jQuery)
 				{
-					console.log("Starting " + ui.toPage.attr("id"));
+					debug.log("Index", "Starting " + ui.toPage.attr("id"));
 					switch (ui.toPage.attr("id"))
 					{
 						case "home":
