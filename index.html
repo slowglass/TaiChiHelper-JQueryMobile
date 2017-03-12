@@ -9,6 +9,7 @@
 		<link rel="stylesheet" href="vendor/waves/waves.min.css" />
 		<link rel="stylesheet" href="vendor/wow/animate.css" />
 		<link rel="stylesheet" href="css/nativedroid2.css" />
+		<link rel="stylesheet" href="css/tai-chi-helper.css" />
 
 		<meta name="mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-capable" content="yes" />
@@ -37,9 +38,12 @@
 		
 
 		<div data-role="page" id="home">
+			<div data-role="panel" id="h-panel" data-display="overlay" data-position-fixed="true" >
+				<nd2-include data-src="panel.left.html"></nd2-include>
+			</div>
 			<div data-role="header" data-position="fixed">
 				<a href="#config" class="ui-btn ui-btn-right" ><i class="zmdi zmdi-more-vert"></i></a>
-				<a href="#leftpanel" class="ui-btn ui-btn-left" ><i class="zmdi zmdi-home"></i></a>
+				<a href="#h-panel" class="ui-btn ui-btn-left" ><i class="zmdi zmdi-menu"></i></a>
 				<h1>Tai Chi Helper</h1>
 			</div>
 			<div role="main" class="ui-content">
@@ -48,9 +52,12 @@
 		</div>
 
 		<div data-role="page" id="standing-stake">
+			<div data-role="panel" id="ss-panel" data-display="overlay" data-position-fixed="true" >
+				<nd2-include data-src="panel.left.html"></nd2-include>
+			</div>
 			<div data-role="header" data-position="fixed">
 				<a href="#config" class="ui-btn ui-btn-right" ><i class="zmdi zmdi-more-vert"></i></a>
-				<a href="#leftpanel" class="ui-btn ui-btn-left" ><i class="zmdi zmdi-home"></i></a>
+				<a href="#ss-panel" class="ui-btn ui-btn-left" ><i class="zmdi zmdi-menu"></i></a>
 				<h1>Standing Stake</h1>
 			</div>
 			<div role="main" class="ui-content">
@@ -59,9 +66,12 @@
 		</div>
 
 		<div data-role="page" id="swimming-dragon">
+			<div data-role="panel" id="sd-panel" data-display="overlay" data-position-fixed="true" >
+				<nd2-include data-src="panel.left.html"></nd2-include>
+			</div>
 			<div data-role="header" data-position="fixed">
 				<a href="#config" class="ui-btn ui-btn-right" ><i class="zmdi zmdi-more-vert"></i></a>
-				<a href="#home" class="ui-btn ui-btn-left" ><i class="zmdi zmdi-home"></i></a>
+				<a href="#sd-panel" class="ui-btn ui-btn-left" ><i class="zmdi zmdi-menu"></i></a>
 				<h1>Swimming Dragon</h1>
 			</div>
 			<div role="main" class="ui-content">
@@ -90,8 +100,11 @@
 		</div>
 
 		<div data-role="page" id="config">
+			<div data-role="panel" id="c-panel" data-display="overlay" data-position-fixed="true" >
+				<nd2-include data-src="panel.left.html"></nd2-include>
+			</div>
 			<div data-role="header" data-position="fixed">
-				<a href="#home" class="ui-btn ui-btn-left" ><i class="zmdi zmdi-home"></i></a>
+				<a href="#c-panel" class="ui-btn ui-btn-left" ><i class="zmdi zmdi-menu"></i></a>
 				<h1>Tai Chi Helper : Config</h1>
 			</div>
 			<div role="main" class="ui-content">
@@ -100,6 +113,8 @@
 						<h4>Standing Stake</h4>
 						<label for="ss-dur" class="select">Duration</label>
 						<select name="ss-dur" id="ss-dur" data-native-menu="false">
+						    <option value="0.5">30 s</option>
+						    <option value="0.666">40 s</option>
 						    <option value="1">1 min</option>
 						    <option value="2" selected="selected">2 mins</option>
 						    <option value="3">3 mins</option>
@@ -124,6 +139,23 @@
 						</div>
 					</div>
 				</form>
+			</div>
+		</div>
+
+		<div data-role="page" id="about">
+			<div data-role="panel" id="a-panel" data-display="overlay" data-position-fixed="true" >
+				<nd2-include data-src="panel.left.html"></nd2-include>
+			</div>
+			<div data-role="header" data-position="fixed">
+				<a href="#a-panel" class="ui-btn ui-btn-left" ><i class="zmdi zmdi-menu"></i></a>
+				<h1>Tai Chi Helper : About</h1>
+			</div>
+			<div role="main" class="ui-content">
+				<p>
+					<b>Author: </b> Chris Davies<br />
+					<b>Git Repository: </b><a href="https://github.com/slowglass/TaiChiHelper">https://github.com/slowglass/TaiChiHelper</a><br />
+					<b>Issues list: </b><a href="https://github.com/slowglass/TaiChiHelper/issues">https://github.com/slowglass/TaiChiHelper/issues</a><br />
+				</p>
 			</div>
 		</div>
 
