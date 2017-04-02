@@ -16,7 +16,7 @@ var MultiTimer = function(spinnerId) {
 }
 
 MultiTimer.prototype = {
-  timer: {  sec: 30, min: 0, iter: 1 },
+  timer: {  sec: 30, min: 0, iter: 1, name: "Multi-Timer" },
   sec: 0, min: 0, iter: -1,
   timerid: null,
   
@@ -28,9 +28,9 @@ MultiTimer.prototype = {
     this.lock.lockScreen();
     if (this.timerid!=null) clearInterval(this.timerid);
     this.timerid=setInterval(function() { self.tick(); }, 1000);
-    this.sec=10;
+    this.sec=this.timer.setupTime;
     this.min=0;
-    this.iter=this.timer.iter;
+    this.iter=this.timer.iter *2;
     this.updateDisplay();
     debug.log("MultiTimer", "Start");
   },
@@ -51,7 +51,16 @@ MultiTimer.prototype = {
     var callback=null;
     this.sec--;
     if (this.sec<0) { this.sec= 59; this.min--; callback=this.minRolloverCB; }
-    if (this.min<0) { this.sec= this.timer.sec; this.min=this.timer.min; this.iter--; callback=this.iterRolloverCB; }
+    if (this.min<0) {
+      this.iter--;
+      callback=this.iterRolloverCB;
+      if (this.iter%2 == 0)
+      {
+        if (this.timer.repeatSetup) { this.sec=this.timer.setupTime; this.min=0; }
+        else this.iter--;
+      }
+      if (this.iter%2 == 1) { this.sec= this.timer.sec; this.min=this.timer.min; }
+    }
     this.updateDisplay();
     if (callback != null) callback();
     if (this.iter<0)
@@ -63,11 +72,15 @@ MultiTimer.prototype = {
   
   updateDisplay: function() { 
     var cd, it;
-    if (this.iter<0) { it = this.timer.iter; cd = this.getNumber(this.timer.min) + ":" + this.getNumber(this.timer.sec); }
-    else if (this.iter == this.timer.iter) { it = "Starting"; cd = this.getNumber(this.sec); }
-    else { it = this.iter+1; cd = this.getNumber(this.min) + ":" + this.getNumber(this.sec); }
+    if (this.iter<0) { 
+      var rep = this.timer.repeatSetup ? "+" : "";
+      it = this.timer.iter; 
+      cd = this.getNumber(this.timer.min) + ":" + this.getNumber(this.timer.sec) + rep; }
+    else if (this.iter%2 == 0) { it = "Setup"; cd = this.getNumber(this.sec); }
+    else { it = (this.iter+1)/2; cd = this.getNumber(this.min) + ":" + this.getNumber(this.sec); }
     $("#standing-stake .iter-count").text(it);
     $("#standing-stake .countdown").text(cd);
+    $("#standing-stake h1").text(this.timer.name);
   },
   
   getNumber: function(n) {
@@ -83,7 +96,9 @@ MultiTimer.prototype = {
     return this;
   },
   
+  setName: function(t) { this.timer.name=t; this.updateDisplay(); },
   getIterations: function(i) { return this.timer.iter; },
   setIterations: function(i) { this.timer.iter=i; this.updateDisplay(); },
-  setDuration: function(s) { var secs = parseInt(s, 10); this.timer.sec=secs%60; this.timer.min=Math.floor(secs/60);  this.updateDisplay(); }
+  setDuration: function(s) { var secs = parseInt(s, 10); this.timer.sec=secs%60; this.timer.min=Math.floor(secs/60);  this.updateDisplay(); },
+  setSetupTime: function(s) { this.timer.setupTime=Math.abs(s);  this.timer.repeatSetup=(s>0); this.updateDisplay(); }
 }

@@ -1,1 +1,4 @@
 .ui-panel-position-left > .ui-panel-inner { top: 0px;}
+.ui-panel-inner { top: 0px;}
+.ui-panel-dismiss-position-left.ui-panel-dismiss-open {
+left: 17em!important;}

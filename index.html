@@ -4,8 +4,8 @@
 		<title>Tai Chi Helper</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
-		<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css" />
+		<link rel="stylesheet" href="vendor/font-awesome/font-awesome.min.css" />
+		<link rel="stylesheet" href="vendor/jquery-mobile/1.4.5/jquery.mobile.min.css" />
 		<link rel="stylesheet" href="vendor/waves/waves.min.css" />
 		<link rel="stylesheet" href="vendor/wow/animate.css" />
 		<link rel="stylesheet" href="css/nativedroid2.css" />
@@ -17,13 +17,16 @@
 	</head>
 	<body>
 		<script>
-		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-		  ga('create', 'UA-82069629-1', 'auto');
-		  ga('send', 'pageview');
+			if (false)
+			{
+				(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+					(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+					m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+				})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+				
+				ga('create', 'UA-82069629-1', 'auto');
+				ga('send', 'pageview');
+			}
 		</script>
 		<style>
 		.centered { margin: auto; display: block;}
@@ -38,116 +41,36 @@
 		
 
 		<div data-role="page" id="home">
-			<div data-role="panel" id="h-panel" data-display="overlay" data-position-fixed="true" >
-				<nd2-include data-src="panel.left.html"></nd2-include>
-			</div>
 			<div data-role="header" data-position="fixed">
-				<a href="#config" class="ui-btn ui-btn-right" ><i class="zmdi zmdi-more-vert"></i></a>
-				<a href="#h-panel" class="ui-btn ui-btn-left" ><i class="zmdi zmdi-menu"></i></a>
+				<a href="#left-manu-panel" class="ui-btn ui-btn-left" ><i class="zmdi zmdi-menu"></i></a>
 				<h1>Tai Chi Helper</h1>
 			</div>
 			<div role="main" class="ui-content">
 				<div id="logo"></div>
 			</div>
 		</div>
-
 		<div data-role="page" id="standing-stake">
-			<div data-role="panel" id="ss-panel" data-display="overlay" data-position-fixed="true" >
-				<nd2-include data-src="panel.left.html"></nd2-include>
-			</div>
 			<div data-role="header" data-position="fixed">
-				<a href="#config" class="ui-btn ui-btn-right" ><i class="zmdi zmdi-more-vert"></i></a>
-				<a href="#ss-panel" class="ui-btn ui-btn-left" ><i class="zmdi zmdi-menu"></i></a>
-				<h1>Standing Stake</h1>
+				<a href="#left-manu-panel" class="ui-btn ui-btn-left" ><i class="zmdi zmdi-menu"></i></a>
+				<h1>Multi-Timer</h1>
 			</div>
 			<div role="main" class="ui-content">
 				<div id="ss-spinner"></div>
 			</div>
 		</div>
 
-		<div data-role="page" id="swimming-dragon">
-			<div data-role="panel" id="sd-panel" data-display="overlay" data-position-fixed="true" >
-				<nd2-include data-src="panel.left.html"></nd2-include>
-			</div>
+		<div data-role="page" id="config2">
 			<div data-role="header" data-position="fixed">
-				<a href="#config" class="ui-btn ui-btn-right" ><i class="zmdi zmdi-more-vert"></i></a>
-				<a href="#sd-panel" class="ui-btn ui-btn-left" ><i class="zmdi zmdi-menu"></i></a>
-				<h1>Swimming Dragon</h1>
+				<a href="#left-manu-panel" class="ui-btn ui-btn-left" ><i class="zmdi zmdi-menu"></i></a>
+				<h1>Tai Chi Helper : Test Config</h1>
 			</div>
 			<div role="main" class="ui-content">
-				<div id="buttons" style="display: none;">
-					<a href="#" id="switch-stats" class="scb"><img src="img/Summary.png"/></a>
-					<a href="#" id="switch-linear"class="scb"><img src="img/Linear.png"/></a>
-					<a href="#" id="switch-polar" class="scb"><img src="img/Polar.png"/></a>
-					<a href="#" id="switch-beta" class="scb"><img src="img/Beta.png"/></a>
-					<a href="#" id="switch-gamma" class="scb"><img src="img/Gamma.png"/></a>
-					<a href="#" id="restart" class="scb"><img src="img/Restart.png"/></a>
-				</div>
-				<div id="sd-spinner" style="display: none;"></div>
-				<div id="graphs" style="display: none;"></div>
-				<div id="stats">
-					<table class="stats" id="gradient-style">
-						<tr><th>Stats</th><th>Beta</th><th>Gamma</th></tr>
-						<tr class="min"><td><strong>Min</strong></td><td class="b"></td><td class="g"></tr>
-						<tr class="max"><td><strong>Max</strong></td><td class="b"></td><td class="g"></tr>
-						<tr class="avg"><td><strong>Avg</strong></td><td class="b"></td><td class="g"></tr>
-						<tr class="aavg"><td><strong>Abs Avg</strong></td><td class="b"></td><td class="g"></tr>
-						<tr class="sd"><td><strong>Std. Dev</strong></td><td class="b"></td><td class="g"></tr>
-					</table>
-					<p>For a summary of beta and gamma, please look <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Orientation_and_motion_data_explained">here</a></p>
-				</div>
-			</div>
-		</div>
-
-		<div data-role="page" id="config">
-			<div data-role="panel" id="c-panel" data-display="overlay" data-position-fixed="true" >
-				<nd2-include data-src="panel.left.html"></nd2-include>
-			</div>
-			<div data-role="header" data-position="fixed">
-				<a href="#c-panel" class="ui-btn ui-btn-left" ><i class="zmdi zmdi-menu"></i></a>
-				<h1>Tai Chi Helper : Config</h1>
-			</div>
-			<div role="main" class="ui-content">
-				<form>
-					<div data-rolexx="collapsible" data-inset="false">
-						<h4>Standing Stake</h4>
-						<label for="ss-dur" class="select">Duration</label>
-						<select name="ss-dur" id="ss-dur" data-native-menu="false">
-						    <option value="30">30 s</option>
-						    <option value="40">40 s</option>
-						    <option value="60">1 min</option>
-						    <option value="120" selected="selected">2 mins</option>
-						    <option value="180">3 mins</option>
-						    <option value="240">4 mins</option>
-						    <option value="300">5 mins</option>
-						    <option value="600">10 mins</option>
-						    <option value="900">15 mins</option>
-						    <option value="1200">20 mins</option>
-						    <option value="1800">30 mins</option>
-						    <option value="2700">45 mins</option>
-						    <option value="3600">60 mins</option>
-						</select>
-						<label for="ss-iter">Iterations:</label><input type="range" name="ss-iter" id="ss-iter" value="2" min="1" max="12" data-highlight="true">
-					</div>
-					<hr />
-					<div data-rolexx="collapsible" data-inset="false">
-						<h4>Swimming Dragon</h4>
-						<label for="sd-dur">Max Duration:</label><input type="range" name="sd-dur" id="sd-dur" value="2" min="1" max="5" data-highlight="true">
-						<div data-role='rangeslider'>
-							<label for='rangeslider1a'>Tilt:</label><input type='range' name='sd-mn' id='sd-mn' min='1' max='90' value='10'>
-							<label for='rangeslider1b'>Tilt:</label><input type='range' name='sd-mx' id='sd-mx' min='1' max='90' value='45'>
-						</div>
-					</div>
-				</form>
 			</div>
 		</div>
 
 		<div data-role="page" id="about">
-			<div data-role="panel" id="a-panel" data-display="overlay" data-position-fixed="true" >
-				<nd2-include data-src="panel.left.html"></nd2-include>
-			</div>
 			<div data-role="header" data-position="fixed">
-				<a href="#a-panel" class="ui-btn ui-btn-left" ><i class="zmdi zmdi-menu"></i></a>
+				<a href="#left-manu-panel" class="ui-btn ui-btn-left" ><i class="zmdi zmdi-menu"></i></a>
 				<h1>Tai Chi Helper : About</h1>
 			</div>
 			<div role="main" class="ui-content">
@@ -159,10 +82,30 @@
 			</div>
 		</div>
 
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-		<script src="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
-		<script src="//d3js.org/d3.v3.min.js"></script>
+		<div data-role="panel" id="left-manu-panel" data-position="left" data-display="reveal" data-theme="a">
+			<div class='nd2-sidepanel-profile' style="height: 56px">
+				<img class='profile-background' src="http://meiquantaichi.com/img/international_branch/branch_photos//sydney-goldencockerel.jpg" style="width:304px;"/>
+				<div class="row">
+					<div class='col-xs-4 center-xs'>
+						<div class='box'>
+						</div>
+					</div>
+					<div class='col-xs-8'>
+						<div class='box profile-text'>
+							<strong>Tai Chi Helper</strong>
+							<span class='subline'>Apps to help you help yourself</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<ul data-role="listview" data-inset="false">
+			</ul>
+		</div>
+
+		<script src="vendor/jquery/2.1.4/jquery.min.js"></script>
+		<script src="vendor/jquery-ui/1.11.4/jquery-ui.min.js"></script>
+		<script src="vendor/jquery-mobile/1.4.5/jquery.mobile.min.js"></script>
+		<script src="vendor/d3/d3.v3.min.js"></script>
 		<script src="nd2settings.js"></script>
 		<script src="vendor/waves/waves.min.js"></script>
 		<script src="vendor/wow/wow.min.js"></script>
@@ -174,6 +117,7 @@
 		<script src="js/spill.js"></script>
 		<script src="js/debug.js"></script>
 		<script src="js/config.js"></script>
+		<script src="js/config2.js"></script>
 		<script src="js/wake-lock.js"></script>
 		<style>
 		.scb img { width: 52px; height: 52px;}
@@ -184,13 +128,26 @@
 			var logo=new YinYang("#logo", "#ccf", "#004");
 			var sd=new SwimmingDragon("#sd-spinner");
 			var config=new Config(timer, sd);
+			var config2=new Config2();
 
-
-			$('#logo path:eq(0)').on("click", function() { $("body").pagecontainer( "change", "#swimming-dragon"); });
-			$('#logo path:eq(1)').on("click", function() { $("body").pagecontainer( "change", "#standing-stake"); });
+			$('#logo path:eq(0)').unbind("click").on("click", function() { $("body").pagecontainer( "change", "#swimming-dragon"); });
+			$('#logo path:eq(1)').unbind("click").on("click", function() { $("body").pagecontainer( "change", "#standing-stake"); });
+			$("body").on("pagechange", function() {
+				$('#left-manu-panel').enhanceWithin().panel(); 
+				$('#left-manu-panel ul').listview();
+				$('#left-manu-panel ul').listview("refresh");
+			});
+			$("body").on("click", "#left-manu-panel ul .sslink", function(e) {
+				var mt=$(this).data("mt");
+				var c=config2.readConfig(mt); //{ cn: "MultiTimer:"+0, st: 10, et:120, ic: 3 };
+				timer.setName(c.cn);
+				timer.setIterations(c.ic);
+				timer.setDuration(c.et);
+				timer.setSetupTime(c.st);
+			});
 
 			$("body").on("pagecontainerbeforechange", function(e, ui) {
-				if (!ui.toPage instanceof jQuery) return;
+				//if (!ui.toPage instanceof jQuery) return;
 				if (ui.prevPage instanceof jQuery)
 				{
 					debug.log("Index", "Stopping " + ui.prevPage.attr("id"));
@@ -208,9 +165,11 @@
 							break;
 					}
 				}
+				
 				if (ui.toPage instanceof jQuery)
 				{
 					debug.log("Index", "Starting " + ui.toPage.attr("id"));
+					$('#left-manu-panel').enhanceWithin().panel();
 					switch (ui.toPage.attr("id"))
 					{
 						case "home":
@@ -224,8 +183,19 @@
 						case "config":
 							config.bind();
 							break;
+						case "config2":
+							config2.bind();
+							break;
 					}
 				}
+			});
+		</script>
+		<script id="panel-init">
+			$( document ).ready(function() { 
+				$('#left-manu-panel').enhanceWithin().panel(); 
+				$('#left-manu-panel ul').listview();
+				$('#left-manu-panel ul').listview("refresh");
+				config2.bind();
 			});
 		</script>
 	</body>
