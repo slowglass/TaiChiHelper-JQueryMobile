@@ -4,7 +4,7 @@ var SwimmingDragon = function(spinnerId) {
 	this.startSound = new Howl({ src: ["music/ting.wav"], volume: 1.0});
   	this.spinner = new YinYang(spinnerId, "#ccf", "#004");
 	this.spill = new Spill();
-	this.lock = new WakeLocker();
+	this.nosleep = new NoSleep();
 	this.init();
 	this.state = "READY";
 }
@@ -371,7 +371,7 @@ SwimmingDragon.prototype.stop = function() {
 	this.startSound.play();
 
 	this.spill.stop();
-    this.lock.unlock();
+    this.nosleep.disable();
 	this.state = "DONE";
     debug.log("MultiTimer", "Stop");
 	window.removeEventListener("deviceorientation", this.callbacks.deviceorientation);
@@ -389,7 +389,7 @@ SwimmingDragon.prototype.prepare = function()
 	$('#buttons').hide();
 
 	this.spinner.spin();
-    this.lock.lockCPU();
+    this.nosleep.enable();
 
 
 	
@@ -418,7 +418,7 @@ SwimmingDragon.prototype.reset = function() {
 	this.timerids = { start: null, stop: null},
 	this.spill.stop();
 	this.spinner.stop();	
-    this.lock.unlock();
+    this.nosleep.disable();
 	this.state = "READY";
     debug.log("MultiTimer", "Reset");
 }

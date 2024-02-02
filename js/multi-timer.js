@@ -1,7 +1,7 @@
 var MultiTimer = function(spinnerId) {
   var self=this;
   this.updateDisplay();
-  this.lock = new WakeLocker();
+  this.nosleep = new NoSleep();
   this.spinner = new YinYang(spinnerId, "#ccf", "#004");
   this.endSound = new Howl({  src: ["music/templeBell.wav"]});
   this.minSound = new Howl({  src: ["music/ting.wav"]});
@@ -25,7 +25,7 @@ MultiTimer.prototype = {
     var self=this;
     this.state = "SPINNING";
     this.spinner.spinClockwise();
-    this.lock.lockScreen();
+    this.nosleep.enable();
     if (this.timerid!=null) clearInterval(this.timerid);
     this.timerid=setInterval(function() { self.tick(); }, 1000);
     this.sec=10;
@@ -39,7 +39,7 @@ MultiTimer.prototype = {
     if (this.timerid!=null) clearInterval(this.timerid);
     this.state = "STATIONARY";
     this.spinner.stop();
-    this.lock.unlock();
+    this.nosleep.disable();
     this.timerid=null;
     this.iter=-1;
     this.updateDisplay();
