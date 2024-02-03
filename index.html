@@ -50,7 +50,7 @@
 				<div id="logo"></div>
 			</div>
 		</div>
-
+		<!--
 		<div data-role="page" id="standing-stake">
 			<div data-role="panel" id="ss-panel" data-display="overlay" data-position-fixed="true" >
 				<nd2-include data-src="panel.left.html"></nd2-include>
@@ -64,6 +64,7 @@
 				<div id="ss-spinner"></div>
 			</div>
 		</div>
+		-->
 
 		<div data-role="page" id="swimming-dragon">
 			<div data-role="panel" id="sd-panel" data-display="overlay" data-position-fixed="true" >
@@ -87,7 +88,7 @@
 				<div id="graphs" style="display: none;"></div>
 				<div id="stats">
 					<table class="stats" id="gradient-style">
-						<tr><th>Stats</th><th>Beta</th><th>Gamma</th></tr>
+						<tr><th>Stats</th><th>Pitch</th><th>Roll</th></tr>
 						<tr class="min"><td><strong>Min</strong></td><td class="b"></td><td class="g"></tr>
 						<tr class="max"><td><strong>Max</strong></td><td class="b"></td><td class="g"></tr>
 						<tr class="avg"><td><strong>Avg</strong></td><td class="b"></td><td class="g"></tr>
@@ -109,6 +110,7 @@
 			</div>
 			<div role="main" class="ui-content">
 				<form>
+					<!--
 					<div data-rolexx="collapsible" data-inset="false">
 						<h4>Standing Stake</h4>
 						<label for="ss-dur" class="select">Duration</label>
@@ -130,6 +132,7 @@
 						<label for="ss-iter">Iterations:</label><input type="range" name="ss-iter" id="ss-iter" value="2" min="1" max="12" data-highlight="true">
 					</div>
 					<hr />
+					-->
 					<div data-rolexx="collapsible" data-inset="false">
 						<h4>Swimming Dragon</h4>
 						<label for="sd-dur">Max Duration:</label><input type="range" name="sd-dur" id="sd-dur" value="2" min="1" max="5" data-highlight="true">
@@ -153,8 +156,8 @@
 			<div role="main" class="ui-content">
 				<p>
 					<b>Author: </b> Chris Davies<br />
-					<b>Git Repository: </b><a href="https://github.com/slowglass/TaiChiHelper">https://github.com/slowglass/TaiChiHelper</a><br />
-					<b>Issues list: </b><a href="https://github.com/slowglass/TaiChiHelper/issues">https://github.com/slowglass/TaiChiHelper/issues</a><br />
+					<b>Git Repository: </b><a href="https://github.com/slowglass/TaiChiHelper">https://github.com/slowglass/TaiChiHelper-JQueryMobile</a><br />
+					<b>Issues list: </b><a href="https://github.com/slowglass/TaiChiHelper/issues">https://github.com/slowglass/TaiChiHelper-JQueryMobil/issues</a><br />
 				</p>
 			</div>
 		</div>
@@ -187,7 +190,8 @@
 
 
 			$('#logo path:eq(0)').on("click", function() { $("body").pagecontainer( "change", "#swimming-dragon"); });
-			$('#logo path:eq(1)').on("click", function() { $("body").pagecontainer( "change", "#standing-stake"); });
+			$('#logo path:eq(1)').on("click", function() { $("body").pagecontainer( "change", "#swimming-dragon"); });
+			//$('#logo path:eq(1)').on("click", function() { $("body").pagecontainer( "change", "#standing-stake"); });
 
 			$("body").on("pagecontainerbeforechange", function(e, ui) {
 				if (!ui.toPage instanceof jQuery) return;
